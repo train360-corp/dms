@@ -7,10 +7,20 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@train360-corp/dms/components/ui/sidebar"
+import { redirect } from 'next/navigation'
+import { createClient } from '@train360-corp/dms/lib/supabase/server'
 
 import data from "./data.json"
 
-export default function Page() {
+export default async function Page() {
+
+  const supabase = await createClient()
+
+  const { data: user, error } = await supabase.auth.getUser()
+  if (error || !user?.user) {
+    redirect('/auth/login')
+  }
+
   return (
     <SidebarProvider
       style={
