@@ -1,6 +1,13 @@
 import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
+import { SidebarInset, SidebarProvider } from "@train360-corp/dms/components/ui/sidebar";
+import { AppSidebar } from "@train360-corp/dms/components/app-sidebar";
+import { SiteHeader } from "@train360-corp/dms/components/site-header";
+import { SectionCards } from "@train360-corp/dms/components/section-cards";
+import { ChartAreaInteractive } from "@train360-corp/dms/components/chart-area-interactive";
+import { DataTable } from "@train360-corp/dms/components/data-table";
+import data from "@train360-corp/dms/app/dashboard/data.json";
 
 
 
@@ -14,5 +21,23 @@ export default async function Layout({ children }: {
     redirect("/auth/login");
   }
 
-  return children;
+
+  return (
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as CSSProperties
+      }
+    >
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader/>
+        <div className="flex flex-1 flex-col">
+          {children}
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  );
 }

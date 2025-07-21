@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   IconCamera,
   IconChartBar,
   IconDashboard,
   IconDatabase,
+  IconDatabaseStar,
   IconFileAi,
   IconFileDescription,
-  IconFileWord,
   IconFolder,
+  IconFolderStar,
   IconHelp,
   IconInnerShadowTop,
   IconListDetails,
-  IconReport,
   IconSearch,
   IconSettings,
   IconUsers,
-} from "@tabler/icons-react"
+} from "@tabler/icons-react";
 
-import { NavDocuments } from "@train360-corp/dms/components/nav-documents"
-import { NavMain } from "@train360-corp/dms/components/nav-main"
-import { NavSecondary } from "@train360-corp/dms/components/nav-secondary"
-import { NavUser } from "@train360-corp/dms/components/nav-user"
+import { NavSection } from "@train360-corp/dms/components/nav-section";
+import { NavMain } from "@train360-corp/dms/components/nav-main";
+import { NavSecondary } from "@train360-corp/dms/components/nav-secondary";
+import { NavUser } from "@train360-corp/dms/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -31,8 +31,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@train360-corp/dms/components/ui/sidebar"
-import { createClient } from "@train360-corp/dms/lib/supabase/client";
+} from "@train360-corp/dms/components/ui/sidebar";
+
+
 
 const data = {
   user: {
@@ -43,7 +44,7 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: IconDashboard,
     },
     {
@@ -132,24 +133,31 @@ const data = {
       icon: IconSearch,
     },
   ],
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: IconDatabase,
-    },
-    {
-      name: "Reports",
-      url: "#",
-      icon: IconReport,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: IconFileWord,
-    },
-  ],
-}
+  documents: [],
+};
+
+const sections: readonly NavSection[] = [
+  {
+    title: "Documents",
+    items: [
+      {
+        name: "Clients",
+        url: "/dashboard/clients",
+        icon: IconDatabase,
+      },
+      {
+        name: "My Clients",
+        url: "/dashboard/my-clients",
+        icon: IconDatabaseStar,
+      },
+      {
+        name: "My Projects",
+        url: "/dashboard/my-projects",
+        icon: IconFolderStar,
+      },
+    ]
+  }
+];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -162,7 +170,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
+                <IconInnerShadowTop className="!size-5"/>
                 <span className="text-base font-semibold">Acme Inc.</span>
               </a>
             </SidebarMenuButton>
@@ -170,13 +178,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavMain items={data.navMain}/>
+        {sections.map((section, index) => (
+          <NavSection section={section} key={index}/>
+        ))}
+        <NavSecondary items={data.navSecondary} className="mt-auto"/>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser />
+        <NavUser/>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

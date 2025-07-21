@@ -25,22 +25,29 @@ import {
   useSidebar,
 } from "@train360-corp/dms/components/ui/sidebar"
 
-export function NavDocuments({
-  items,
+type NavSectionItem = {
+  name: string
+  url: string
+  icon: Icon
+}
+
+export type NavSection = {
+  title: string
+  items: readonly NavSectionItem[]
+}
+
+export function NavSection({
+  section,
 }: {
-  items: {
-    name: string
-    url: string
-    icon: Icon
-  }[]
+  section: NavSection
 }) {
   const { isMobile } = useSidebar()
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Documents</SidebarGroupLabel>
+      <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {section.items.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <a href={item.url}>
@@ -80,12 +87,6 @@ export function NavDocuments({
             </DropdownMenu>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton className="text-sidebar-foreground/70">
-            <IconDots className="text-sidebar-foreground/70" />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   )
