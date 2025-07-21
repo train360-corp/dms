@@ -1,12 +1,10 @@
-create type permission as enum ('CLIENT', 'PROJECT');
 create type access as enum ('READ', 'EDIT', 'DELETE', 'ADMIN');
 
 create table public.permissions (
   id uuid primary key not null default gen_random_uuid (),
   created_at timestamp with time zone not null default (now() AT TIME ZONE 'utc'::text),
-  type permission not null,
   level access not null,
-  user_id uuid references auth.users(id) on update cascade on delete cascade,
+  user_id uuid not null references auth.users(id) on update cascade on delete cascade,
   client_id integer references public.clients(id) on update cascade on delete cascade,
   project_id uuid references public.projects(id) on update cascade on delete cascade,
   check (
@@ -20,6 +18,7 @@ create table public.permissions (
 create or replace function has_admin_permission(_user uuid, _client_id int, _project_id uuid)
 returns boolean
 security definer
+set search_path = public
 language sql
 stable
 as $$

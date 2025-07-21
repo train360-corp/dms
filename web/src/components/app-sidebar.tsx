@@ -20,7 +20,7 @@ import {
 } from "@tabler/icons-react";
 
 import { NavSection } from "@train360-corp/dms/components/nav-section";
-import { NavMain } from "@train360-corp/dms/components/nav-main";
+import { NavQuickCreate } from "@train360-corp/dms/components/nav-quick-create";
 import { NavSecondary } from "@train360-corp/dms/components/nav-secondary";
 import { NavUser } from "@train360-corp/dms/components/nav-user";
 import {
@@ -138,6 +138,21 @@ const data = {
 
 const sections: readonly NavSection[] = [
   {
+    title: undefined,
+    items: [
+      {
+        name: "Dashboard",
+        icon: IconDashboard,
+        url: "/dashboard"
+      },
+      {
+        name: "Team",
+        url: "/dashboard/team",
+        icon: IconUsers
+      }
+    ]
+  },
+  {
     title: "Documents",
     items: [
       {
@@ -178,7 +193,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain}/>
+        <NavQuickCreate/>
         {sections.map((section, index) => (
           <NavSection section={section} key={index}/>
         ))}

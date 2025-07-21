@@ -7,7 +7,9 @@ create table public.clients (
 alter table public.clients enable row level security;
 
 create or replace function clients_before_actions()
-returns trigger as $$
+returns trigger 
+set search_path = public
+as $$
 begin
   if tg_op = 'UPDATE' and new.id <> old.id then
     raise exception 'Cannot change client ID once set';
@@ -24,6 +26,7 @@ execute function clients_before_actions();
 create or replace function clients_after_actions()
 returns trigger 
 security definer
+set search_path = public, storage
 as $$
 begin
   

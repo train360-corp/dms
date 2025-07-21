@@ -10,7 +10,9 @@ create table public.projects (
 alter table public.projects enable row level security;
 
 create or replace function projects_before_actions()
-returns trigger as $$
+returns trigger 
+set search_path = public
+as $$
 begin
 
   if tg_op = 'INSERT' and new.project_number is null then
