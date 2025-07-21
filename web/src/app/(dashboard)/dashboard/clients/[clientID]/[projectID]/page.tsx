@@ -7,14 +7,14 @@ import * as React from "react";
 
 export default async function Page({ params }: {
   params: Promise<{
-    id: string;
+    clientID: string;
     projectID: string;
   }>
 }) {
 
-  const { id, projectID } = await params;
+  const { clientID, projectID } = await params;
   const supabase = await createClient();
-  const client = await supabase.from("clients").select().eq("id", Number(id)).single();
+  const client = await supabase.from("clients").select().eq("id", Number(clientID)).single();
   const project = await supabase.from("projects").select().eq("client_id", client.data?.id ?? 0).eq("project_number", Number(projectID)).single();
 
   if (client.error || project.error) redirect("/dashboard/clients");

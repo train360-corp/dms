@@ -148,7 +148,8 @@ const sections: readonly NavSection[] = [
       {
         name: "Team",
         url: "/dashboard/team",
-        icon: IconUsers
+        icon: IconUsers,
+        isComingSoon: true
       }
     ]
   },
@@ -164,11 +165,13 @@ const sections: readonly NavSection[] = [
         name: "My Clients",
         url: "/dashboard/my-clients",
         icon: IconDatabaseStar,
+        isComingSoon: true
       },
       {
         name: "My Projects",
         url: "/dashboard/my-projects",
         icon: IconFolderStar,
+        isComingSoon: true
       },
     ]
   }

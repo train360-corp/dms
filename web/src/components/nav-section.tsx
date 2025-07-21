@@ -10,27 +10,27 @@ import {
   useSidebar,
 } from "@train360-corp/dms/components/ui/sidebar";
 import { usePathname, useRouter } from "next/navigation";
+import { Badge } from "@train360-corp/dms/components/ui/badge";
 
 
 
 type NavSectionItem = {
-  name: string
-  url: string
-  icon: Icon
+  name: string;
+  url: string;
+  icon: Icon;
+  isComingSoon?: true;
 }
 
 export type NavSection = {
   title: string | undefined;
-  items: readonly NavSectionItem[]
+  items: readonly NavSectionItem[];
 }
 
 export function NavSection({ section, }: {
   section: NavSection
 }) {
-  const { isMobile } = useSidebar();
   const router = useRouter();
   const path = usePathname();
-
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       {section.title !== undefined && (
@@ -39,9 +39,16 @@ export function NavSection({ section, }: {
       <SidebarMenu>
         {section.items.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton isActive={item.url === path} onClick={() => router.push(item.url)}>
+            <SidebarMenuButton disabled={item.url === path || item.isComingSoon} isActive={item.url === path} onClick={() => router.push(item.url)}>
               <item.icon/>
               <span>{item.name}</span>
+              { item.isComingSoon && (
+                <Badge
+                  variant="outline"
+                >
+                  {"Coming Soon"}
+                </Badge>
+              ) }
             </SidebarMenuButton>
             {/*<DropdownMenu>*/}
             {/*  <DropdownMenuTrigger asChild>*/}

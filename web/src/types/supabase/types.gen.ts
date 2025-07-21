@@ -715,16 +715,19 @@ export type Database = {
     Tables: {
       clients: {
         Row: {
+          access: Database["public"]["Enums"]["access"]
           created_at: string
           id: number
           name: string
         }
         Insert: {
+          access?: Database["public"]["Enums"]["access"]
           created_at?: string
           id?: number
           name: string
         }
         Update: {
+          access?: Database["public"]["Enums"]["access"]
           created_at?: string
           id?: number
           name?: string
@@ -734,18 +737,24 @@ export type Database = {
       company: {
         Row: {
           created_at: string
+          default_clients_access: Database["public"]["Enums"]["access"]
+          default_projects_access: Database["public"]["Enums"]["access"]
           id: boolean
           logo_url: string | null
           name: string
         }
         Insert: {
           created_at?: string
+          default_clients_access?: Database["public"]["Enums"]["access"]
+          default_projects_access?: Database["public"]["Enums"]["access"]
           id?: boolean
           logo_url?: string | null
           name?: string
         }
         Update: {
           created_at?: string
+          default_clients_access?: Database["public"]["Enums"]["access"]
+          default_projects_access?: Database["public"]["Enums"]["access"]
           id?: boolean
           logo_url?: string | null
           name?: string
@@ -799,8 +808,51 @@ export type Database = {
           },
         ]
       }
+      permissions: {
+        Row: {
+          client_id: number | null
+          created_at: string
+          id: string
+          level: Database["public"]["Enums"]["access"]
+          project_id: string | null
+          user_id: string
+        }
+        Insert: {
+          client_id?: number | null
+          created_at?: string
+          id?: string
+          level: Database["public"]["Enums"]["access"]
+          project_id?: string | null
+          user_id: string
+        }
+        Update: {
+          client_id?: number | null
+          created_at?: string
+          id?: string
+          level?: Database["public"]["Enums"]["access"]
+          project_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "permissions_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "permissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
+          access: Database["public"]["Enums"]["access"]
           client_id: number
           created_at: string
           id: string
@@ -808,6 +860,7 @@ export type Database = {
           project_number: number
         }
         Insert: {
+          access?: Database["public"]["Enums"]["access"]
           client_id: number
           created_at?: string
           id?: string
@@ -815,6 +868,7 @@ export type Database = {
           project_number: number
         }
         Update: {
+          access?: Database["public"]["Enums"]["access"]
           client_id?: number
           created_at?: string
           id?: string
@@ -863,10 +917,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_admin_permission: {
+        Args: { _client_id: number; _project_id: string; _user: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      access: "READ" | "EDIT" | "DELETE" | "ADMIN" | "NONE"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1009,7 +1066,9 @@ export const Constants = {
     },
   },
   public: {
-    Enums: {},
+    Enums: {
+      access: ["READ", "EDIT", "DELETE", "ADMIN", "NONE"],
+    },
   },
 } as const
 

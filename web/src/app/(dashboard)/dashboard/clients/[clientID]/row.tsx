@@ -2,7 +2,7 @@
 
 import { TableCell, TableRow } from "@train360-corp/dms/components/ui/table";
 import * as React from "react";
-import { columns } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/[id]/columns";
+import { columns } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/[clientID]/columns";
 import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
 import { useRouter } from "next/navigation";
 

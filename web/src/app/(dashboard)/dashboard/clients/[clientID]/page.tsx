@@ -2,21 +2,21 @@ import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { H1, H2 } from "@train360-corp/dms/components/ui/text";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@train360-corp/dms/components/ui/table";
-import { columns } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/[id]/columns";
+import { columns } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/[clientID]/columns";
 import * as React from "react";
-import { ProjectRow } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/[id]/row";
+import { ProjectRow } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/[clientID]/row";
 
 
 
 export default async function Page({ params }: {
   params: Promise<{
-    id: string;
+    clientID: string;
   }>
 }) {
 
-  const { id } = await params;
+  const { clientID } = await params;
   const supabase = await createClient();
-  const client = await supabase.from("clients").select().eq("id", Number(id)).single();
+  const client = await supabase.from("clients").select().eq("id", Number(clientID)).single();
   const projects = await supabase.from("projects").select().eq("client_id", client.data?.id ?? 0);
 
   if (client.error || projects.error) redirect("/dashboard/clients");
