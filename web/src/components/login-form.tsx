@@ -17,8 +17,8 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState(process.env.NODE_ENV === "development" ? "harvey@pearsonspecter.com" : '')
+  const [password, setPassword] = useState(process.env.NODE_ENV === "development" ? "password123" : '')
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
