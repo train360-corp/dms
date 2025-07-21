@@ -6,3 +6,5 @@ create table public.company (
 );
 
 alter table public.company enable row level security;
+
+create policy "select: authenticated users" on "public"."company" as PERMISSIVE for SELECT to authenticated using (true);
