@@ -20,3 +20,23 @@ create trigger clients_before_actions
 before insert or update or delete on clients
 for each row
 execute function clients_before_actions();
+
+create or replace function clients_after_actions()
+returns trigger 
+security definer
+as $$
+begin
+  
+  if tg_op = 'INSERT' THEN
+    insert into storage.buckets (id, name, public) values
+    (new.id::text, new.id::text, false);
+  end if;
+
+  return coalesce(new, old);
+end;
+$$ language plpgsql;
+
+create trigger clients_after_actions
+before insert or update or delete on clients
+for each row
+execute function clients_after_actions();
