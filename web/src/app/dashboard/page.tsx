@@ -1,17 +1,10 @@
-import { AppSidebar } from "@train360-corp/dms/components/app-sidebar"
-import { ChartAreaInteractive } from "@train360-corp/dms/components/chart-area-interactive"
-import { DataTable } from "@train360-corp/dms/components/data-table"
-import { SectionCards } from "@train360-corp/dms/components/section-cards"
-import { SiteHeader } from "@train360-corp/dms/components/site-header"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@train360-corp/dms/components/ui/sidebar"
-import { redirect } from 'next/navigation'
-import { createClient } from '@train360-corp/dms/lib/supabase/server'
+import { ChartAreaInteractive } from "@train360-corp/dms/components/chart-area-interactive";
+import { DataTable } from "@train360-corp/dms/components/data-table";
+import { SectionCards } from "@train360-corp/dms/components/section-cards";
 
-import data from "./data.json"
-import { CSSProperties } from "react";
+import data from "./data.json";
+
+
 
 export default async function Page() {
   return (

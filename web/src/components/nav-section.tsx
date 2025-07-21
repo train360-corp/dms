@@ -24,6 +24,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@train360-corp/dms/components/ui/sidebar"
+import { useRouter } from "next/navigation";
 
 type NavSectionItem = {
   name: string
@@ -42,18 +43,16 @@ export function NavSection({
   section: NavSection
 }) {
   const { isMobile } = useSidebar()
-
+  const router = useRouter();
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
       <SidebarMenu>
         {section.items.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
-              </a>
+            <SidebarMenuButton onClick={() => router.push(item.url)}>
+              <item.icon/>
+              <span>{item.name}</span>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
