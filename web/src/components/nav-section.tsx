@@ -1,16 +1,11 @@
-"use client";
-
 import { type Icon, } from "@tabler/icons-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@train360-corp/dms/components/ui/sidebar";
-import { usePathname, useRouter } from "next/navigation";
-import { Badge } from "@train360-corp/dms/components/ui/badge";
+import { NavSectionButton } from "@train360-corp/dms/components/nav-section-button";
 
 
 
@@ -26,30 +21,22 @@ export type NavSection = {
   items: readonly NavSectionItem[];
 }
 
-export function NavSection({ section, }: {
-  section: NavSection
+export function NavSection({ section, sectionNumber }: {
+  section: NavSection;
+  sectionNumber: number;
 }) {
-  const router = useRouter();
-  const path = usePathname();
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       {section.title !== undefined && (
         <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
       )}
       <SidebarMenu>
-        {section.items.map((item) => (
+        {section.items.map((item, index) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton disabled={item.url === path || item.isComingSoon} isActive={item.url === path} onClick={() => router.push(item.url)}>
-              <item.icon/>
-              <span>{item.name}</span>
-              { item.isComingSoon && (
-                <Badge
-                  variant="outline"
-                >
-                  {"Coming Soon"}
-                </Badge>
-              ) }
-            </SidebarMenuButton>
+
+            <NavSectionButton sectionNumber={sectionNumber} itemNumber={index}/>
+
             {/*<DropdownMenu>*/}
             {/*  <DropdownMenuTrigger asChild>*/}
             {/*    <SidebarMenuAction*/}

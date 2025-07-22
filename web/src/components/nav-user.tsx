@@ -1,6 +1,4 @@
-"use client";
-
-import { IconCreditCard, IconDotsVertical, IconLogout, IconNotification, IconUserCircle, } from "@tabler/icons-react";
+import { IconDotsVertical, IconUserCircle, } from "@tabler/icons-react";
 
 import { Avatar, AvatarFallback, AvatarImage, } from "@train360-corp/dms/components/ui/avatar";
 import {
@@ -12,12 +10,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@train360-corp/dms/components/ui/dropdown-menu";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar, } from "@train360-corp/dms/components/ui/sidebar";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, } from "@train360-corp/dms/components/ui/sidebar";
 import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
-import { useEffect, useState } from "react";
-import { createClient } from "@train360-corp/dms/lib/supabase/client";
+import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { User } from "@supabase/auth-js";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import { NavUserLogout } from "@train360-corp/dms/components/nav-user-logout";
 
 
 
@@ -25,23 +23,18 @@ type CurrentUser = Tables<"users"> & {
   auth: User
 };
 
-export function NavUser() {
-  const { isMobile } = useSidebar();
+export async function NavUser() {
 
-  const router = useRouter();
-  const supabase = createClient();
-  const [ user, setUser ] = useState<CurrentUser | null>(null);
+  const supabase = await createClient();
 
-  useEffect(() => {
-    (async () => {
-      const { data: { user: auth } } = await supabase.auth.getUser();
-      const { data: $public } = await supabase.from("users").select().eq("id", auth?.id ?? "").single();
-      if (auth !== null && $public !== null) setUser({
-        auth,
-        ...$public,
-      });
-    })();
-  }, []);
+  const { data: { user: auth } } = await supabase.auth.getUser();
+  const { data: $public } = await supabase.from("users").select().eq("id", auth?.id ?? "").single();
+  if (auth === null || $public === null) redirect("/auth/login");
+
+  const user: CurrentUser = {
+    auth,
+    ...$public,
+  };
 
   return (
     <SidebarMenu>
@@ -68,7 +61,6 @@ export function NavUser() {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
@@ -103,13 +95,7 @@ export function NavUser() {
               {/*</DropdownMenuItem>*/}
             </DropdownMenuGroup>
             <DropdownMenuSeparator/>
-            <DropdownMenuItem onClick={async () => {
-              await supabase.auth.signOut();
-              router.replace("/auth/login");
-            }}>
-              <IconLogout/>
-              Log out
-            </DropdownMenuItem>
+            {/*<NavUserLogout/>*/}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
