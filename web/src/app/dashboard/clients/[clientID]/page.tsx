@@ -18,6 +18,7 @@ export default async function Page({ params }: {
   const supabase = await createClient();
   const client = await supabase.from("clients").select().eq("id", Number(clientID)).single();
   const projects = await supabase.from("projects").select().eq("client_id", client.data?.id ?? 0);
+  const permissions = await supabase.from("permissions").select("*, user_id (*)").eq("client_id", client.data?.id ?? -1);
 
   if (client.error || projects.error) redirect("/dashboard/clients");
 
@@ -26,6 +27,35 @@ export default async function Page({ params }: {
       <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6">
 
         <H1>{client.data.name}</H1>
+
+        <div className={"flex flex-col gap-2 md:gap-4"}>
+          <H2>{"People"}</H2>
+          <div className="flex flex-col gap-4 overflow-auto overflow-hidden rounded-lg border">
+            <Table>
+              <TableHeader className="bg-muted sticky top-0 z-10">
+                <TableRow>
+                  <TableHead>{"Name"}</TableHead>
+                  <TableHead className={"text-right"}>{"Access"}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="**:data-[slot=table-cell]:first:w-8">
+
+                <TableRow>
+                  <TableCell>{"Default"}</TableCell>
+                  <TableCell align={"right"}>{client.data.access}</TableCell>
+                </TableRow>
+
+                {permissions.data.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell>{row.user_id.full_name}</TableCell>
+                    <TableCell align={"right"}>{row.level}</TableCell>
+                  </TableRow>
+                ))}
+
+              </TableBody>
+            </Table>
+          </div>
+        </div>
 
         <div className={"flex flex-col gap-2 md:gap-4"}>
           <H2>{"Projects"}</H2>

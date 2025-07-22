@@ -1,17 +1,21 @@
 import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
+import { DateTime } from "luxon";
 
-
-
-export const columns: readonly {
-  key: keyof Tables<"directories">;
+type Row<T extends keyof Tables<"directories">> = {
+  key: T;
   header: string;
-}[] = [
+  formatter?: (v: Tables<"directories">[T]) => string;
+}
+
+
+export const columns: readonly Row<keyof Tables<"directories">>[] = [
   {
     key: "name",
     header: "Name"
   },
   {
     key: "created_at",
-    header: "Created At"
+    header: "Created At",
+    formatter: (row) => row ? (DateTime.fromISO(row).toRelative() ?? "") : "",
   }
 ];

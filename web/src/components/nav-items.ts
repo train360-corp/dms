@@ -1,5 +1,12 @@
 import { NavSection } from "@train360-corp/dms/components/nav-section";
-import { IconDashboard, IconDatabase, IconDatabaseStar, IconFolderStar, IconUsers } from "@tabler/icons-react";
+import {
+  IconDashboard,
+  IconDatabase,
+  IconDatabaseStar,
+  IconFolderStar,
+  IconListDetails,
+  IconUsers
+} from "@tabler/icons-react";
 
 
 
@@ -16,6 +23,12 @@ export const sections: readonly NavSection[] = [
         name: "Team",
         url: "/dashboard/team",
         icon: IconUsers,
+        isComingSoon: true
+      },
+      {
+        name: "Lifecycle",
+        url: "/dashboard/lifecycle",
+        icon: IconListDetails,
         isComingSoon: true
       }
     ]

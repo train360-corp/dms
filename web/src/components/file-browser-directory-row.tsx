@@ -18,8 +18,8 @@ export default function FileBrowserDirectoryRow({directory, project}: {
   return (
     <TableRow className={"cursor-pointer"} onClick={() => router.push(`/dashboard/clients/${project.client_id}/${project.project_number}/${directory.id}`)}>
       {columns.map((col, index) => (
-        <TableCell key={index}>
-          {directory[col.key]}
+        <TableCell key={index} className={"last:text-right"}>
+          {col.formatter ? col.formatter(directory[col.key]) : directory[col.key]}
         </TableCell>
       ))}
     </TableRow>
