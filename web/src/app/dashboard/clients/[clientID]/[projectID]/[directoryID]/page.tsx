@@ -1,7 +1,11 @@
 import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { FileBrowser } from "@train360-corp/dms/components/file-browser";
-import { H1, H2, P } from "@train360-corp/dms/components/ui/text";
+import { H1, P } from "@train360-corp/dms/components/ui/text";
+import { Button } from "@train360-corp/dms/components/ui/button";
+import { FolderUpIcon } from "lucide-react";
+import { NavigateUpButton } from "@train360-corp/dms/app/dashboard/clients/[clientID]/[projectID]/[directoryID]/nav-up-button";
+import Link from "next/link";
 
 
 
@@ -18,11 +22,10 @@ export default async function Page({ params, }: {
   const client = await supabase.from("clients").select().eq("id", Number(clientID)).single();
   const project = await supabase.from("projects").select().eq("client_id", Number(clientID)).eq("project_number", Number(projectID)).single();
 
-  let directoryQuery = supabase.from("directories").select().eq("project_id", project.data?.id ?? "");
-  if(directoryID !== "_") directoryQuery = directoryQuery.eq("id", directoryID);
-  const directory = await directoryQuery.maybeSingle();
+  let directoryQuery = supabase.from("directories").select().eq("project_id", project.data?.id ?? "").eq("id", directoryID).maybeSingle();
+  const directory = directoryID === "_" ? null : await directoryQuery;
 
-  if (client.error || project.error || directory.error) redirect("/dashboard/clients");
+  if (client.error || project.error || directory?.error) redirect("/dashboard/clients");
 
   return (
     <div className="@container/main flex flex-1 flex-col gap-2">
@@ -30,11 +33,21 @@ export default async function Page({ params, }: {
 
         <div className={"flex flex-col gap-2"}>
           <div className={"flex flex-row items-center gap-2"}>
-            <P>{client.data.name}</P>
+            <Link href={`/dashboard/clients/${client.data.id}`}>
+              <P className="cursor-pointer hover:underline">{client.data.name}</P>
+            </Link>
             <P>{"·"}</P>
-            <P>{project.data.name}</P>
+            <Link href={`/dashboard/clients/${client.data.id}/${project.data.project_number}`}>
+              <P className="cursor-pointer hover:underline">{project.data.name}</P>
+            </Link>
           </div>
-          <H1>{directory.data ? directory.data.name : "Files"}</H1>
+
+          <div className={"flex flex-row items-center gap-2"}>
+            {directoryID !== "_" && (
+              <NavigateUpButton client={client.data} project={project.data} directory={directory?.data ?? null} />
+            )}
+            <H1>{directory?.data ? directory.data.name : "Files"}</H1>
+          </div>
         </div>
 
         <FileBrowser directoryID={directoryID} project={project.data} client={client.data}/>

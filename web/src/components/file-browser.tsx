@@ -6,6 +6,7 @@ import { columns } from "@train360-corp/dms/components/file-browser-directory-co
 import FileBrowserDirectoryRow from "@train360-corp/dms/components/file-browser-directory-row";
 
 
+
 export const FileBrowser = async ({ client, project, directoryID }: {
   client: Tables<"clients">;
   project: Tables<"projects">;
@@ -18,9 +19,11 @@ export const FileBrowser = async ({ client, project, directoryID }: {
   const directory = isRootPath ? null : await supabase.from("directories").select().eq("project_id", project.id).eq("id", directoryID).single();
 
   let directoriesQuery = supabase.from("directories").select().eq("project_id", project.id);
-  if(isRootPath) directoriesQuery = directoriesQuery.is("parent_id", null);
+  if (isRootPath) directoriesQuery = directoriesQuery.is("parent_id", null);
   else directoriesQuery = directoriesQuery.eq("parent_id", directory?.data?.id ?? "");
   const directories = await directoriesQuery;
+
+  const items = (directories.data?.length ?? 0);
 
   if (directory?.error || directories.error) redirect(`/dashboard/clients/${client.id}/${project.id}`);
 
@@ -42,14 +45,16 @@ export const FileBrowser = async ({ client, project, directoryID }: {
             <FileBrowserDirectoryRow directory={directory} project={project} key={index}/>
           ))}
 
-          {/*<TableRow>*/}
-          {/*  <TableCell*/}
-          {/*    colSpan={columns.length}*/}
-          {/*    className="h-24 text-center"*/}
-          {/*  >*/}
-          {/*    {"Looks like you haven't created a project yet! Create one to get started."}*/}
-          {/*  </TableCell>*/}
-          {/*</TableRow>*/}
+          {items === 0 && (
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className="h-24 text-center"
+              >
+                {"Looks like you haven't created anything yet! Create something to get started."}
+              </TableCell>
+            </TableRow>
+          )}
 
         </TableBody>
       </Table>
