@@ -1,6 +1,7 @@
 import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { FileBrowser } from "@train360-corp/dms/components/file-browser";
+import { H1 } from "@train360-corp/dms/components/ui/text";
 
 
 
@@ -22,6 +23,9 @@ export default async function Page({ params, }: {
   return (
     <div className="@container/main flex flex-1 flex-col gap-2">
       <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6">
+
+        <H1>{"Files"}</H1>
+
         <FileBrowser path={path} project={project.data} client={client.data}/>
       </div>
     </div>

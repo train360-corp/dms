@@ -761,6 +761,45 @@ export type Database = {
         }
         Relationships: []
       }
+      directories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          parent_id: string | null
+          project_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          parent_id?: string | null
+          project_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          parent_id?: string | null
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "directories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "directories_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       files: {
         Row: {
           created_at: string
@@ -918,7 +957,7 @@ export type Database = {
     }
     Functions: {
       has_admin_permission: {
-        Args: { _client_id: number; _project_id: string; _user: string }
+        Args: { _client_id: number; _user: string; _project_id: string }
         Returns: boolean
       }
     }
