@@ -14,9 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-        <head />
-        <body>
-          <ThemeProvider
+    <head>
+      {/* inject dynamic Docker env vars */}
+      <script src="/env.js"/>
+    </head>
+    <body>
+    <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
