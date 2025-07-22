@@ -20,7 +20,7 @@ export default async function Page({ params }: {
   const projects = await supabase.from("projects").select().eq("client_id", client.data?.id ?? 0);
   const permissions = await supabase.from("permissions").select("*, user_id (*)").eq("client_id", client.data?.id ?? -1);
 
-  if (client.error || projects.error) redirect("/dashboard/clients");
+  if (client.error || projects.error || permissions.error) redirect("/dashboard/clients");
 
   return (
     <div className="@container/main flex flex-1 flex-col gap-2">
