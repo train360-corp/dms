@@ -957,7 +957,7 @@ export type Database = {
     }
     Functions: {
       has_admin_permission: {
-        Args: { _client_id: number; _user: string; _project_id: string }
+        Args: { _client_id: number; _project_id: string; _user: string }
         Returns: boolean
       }
     }

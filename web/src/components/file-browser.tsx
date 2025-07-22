@@ -1,53 +1,58 @@
 import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
-import { P } from "@train360-corp/dms/components/ui/text";
-import Link from "next/link";
+import { createClient } from "@train360-corp/dms/lib/supabase/server";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@train360-corp/dms/components/ui/table";
+import { redirect } from "next/navigation";
+import { columns } from "@train360-corp/dms/components/file-browser-directory-columns";
+import FileBrowserDirectoryRow from "@train360-corp/dms/components/file-browser-directory-row";
 
 
-
-export const FileBrowser = ({ client, project, path: $path }: {
+export const FileBrowser = async ({ client, project, directoryID }: {
   client: Tables<"clients">;
   project: Tables<"projects">;
-  path: readonly string[];
+  directoryID: string;
 }) => {
 
-  const isRootPath = $path.length === 0 || ($path.length === 1 && $path[0] === "_");
-  const path = isRootPath ? [] : $path;
+  const supabase = await createClient();
+  const isRootPath = directoryID === "_";
 
-  const baseHref = `/dashboard/clients/${client.id}/${project.project_number}`;
-  const fullSegments = path.map((_, index, path) => `${baseHref}/${path.slice(0, index + 1).join("/")}`);
+  const directory = isRootPath ? null : await supabase.from("directories").select().eq("project_id", project.id).eq("id", directoryID).single();
+
+  let directoriesQuery = supabase.from("directories").select().eq("project_id", project.id);
+  if(isRootPath) directoriesQuery = directoriesQuery.is("parent_id", null);
+  else directoriesQuery = directoriesQuery.eq("parent_id", directory?.data?.id ?? "");
+  const directories = await directoriesQuery;
+
+  if (directory?.error || directories.error) redirect(`/dashboard/clients/${client.id}/${project.id}`);
 
   return (
-    <div className="outline-1 rounded-2xl outline-muted overflow-hidden">
+    <div className="flex flex-col gap-4 overflow-auto overflow-hidden rounded-lg border">
+      <Table>
+        <TableHeader className="bg-muted sticky top-0 z-10">
+          <TableRow>
+            {columns.map((col, index) => (
+              <TableHead key={index}>
+                {col.header}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody className="**:data-[slot=table-cell]:first:w-8">
 
-      {/* Header */}
-      <div className="flex flex-row py-2 px-4 gap-2 items-center flex-wrap bg-muted">
+          {(directories.data.length > 0) && directories.data.map((directory, index) => (
+            <FileBrowserDirectoryRow directory={directory} project={project} key={index}/>
+          ))}
 
-        <Link href={`/dashboard/clients/${client.id}`}>
-          <P className="cursor-pointer hover:underline">{client.name}</P>
-        </Link>
+          {/*<TableRow>*/}
+          {/*  <TableCell*/}
+          {/*    colSpan={columns.length}*/}
+          {/*    className="h-24 text-center"*/}
+          {/*  >*/}
+          {/*    {"Looks like you haven't created a project yet! Create one to get started."}*/}
+          {/*  </TableCell>*/}
+          {/*</TableRow>*/}
 
-        <P>{"/"}</P>
-
-        <Link href={baseHref}>
-          <P className="cursor-pointer hover:underline">{project.name}</P>
-        </Link>
-
-        {path.length > 0 && <P>{"/"}</P>}
-
-        {path.map((slug, index) => (
-          <span key={index} className="flex flex-row items-center gap-2">
-            <Link href={fullSegments[index]}>
-              <P className="cursor-pointer hover:underline">{slug}</P>
-            </Link>
-            {index < path.length - 1 && <P>{"/"}</P>}
-          </span>
-        ))}
-      </div>
-
-      <div>
-        <P>{"FOO"}</P>
-      </div>
-
+        </TableBody>
+      </Table>
     </div>
   );
 };

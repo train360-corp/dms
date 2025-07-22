@@ -2,6 +2,7 @@ import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { H1, H2, P } from "@train360-corp/dms/components/ui/text";
 import * as React from "react";
+import { FileBrowser } from "@train360-corp/dms/components/file-browser";
 
 
 
@@ -30,6 +31,12 @@ export default async function Page({ params }: {
 
         <div className={"flex flex-col gap-2 md:gap-4"}>
           <H2>{"Files"}</H2>
+
+          <FileBrowser
+            client={client.data}
+            project={project.data}
+            directoryID={"_"}
+          />
 
           {/*<div className="flex flex-col gap-4 overflow-auto overflow-hidden rounded-lg border">*/}
           {/*  <Table>*/}

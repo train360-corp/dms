@@ -1,3 +1,4 @@
+-- visible to default user
 insert into public.directories (
     project_id, 
     id, 
@@ -27,4 +28,18 @@ insert into public.directories (
     gen_random_uuid (),
     'R., Helly',
     '0518E1C7-91DD-471A-B934-35DF7729B664'::uuid
+);
+
+-- not visible to default test user
+insert into public.directories (
+    project_id, 
+    id, 
+    name, 
+    parent_id
+) values 
+(
+    (select id from public.projects where name = 'Regional Merger Plan'),
+    gen_random_uuid (),
+    'Not Visible',
+    NULL
 );
