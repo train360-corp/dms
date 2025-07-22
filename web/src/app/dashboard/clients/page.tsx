@@ -2,8 +2,8 @@ import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@train360-corp/dms/components/ui/table";
 import * as React from "react";
 import { H1 } from "@train360-corp/dms/components/ui/text";
-import { columns } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/columns";
-import { ClientRow } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/row";
+import { columns } from "@train360-corp/dms/app/dashboard/clients/columns";
+import { ClientRow } from "@train360-corp/dms/app/dashboard/clients/row";
 
 
 

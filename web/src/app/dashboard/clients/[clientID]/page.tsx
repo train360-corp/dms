@@ -2,9 +2,9 @@ import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { H1, H2 } from "@train360-corp/dms/components/ui/text";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@train360-corp/dms/components/ui/table";
-import { columns } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/[clientID]/columns";
+import { columns } from "@train360-corp/dms/app/dashboard/clients/[clientID]/columns";
 import * as React from "react";
-import { ProjectRow } from "@train360-corp/dms/app/(dashboard)/dashboard/clients/[clientID]/row";
+import { ProjectRow } from "@train360-corp/dms/app/dashboard/clients/[clientID]/row";
 
 
 
