@@ -800,6 +800,49 @@ export type Database = {
           },
         ]
       }
+      favorites: {
+        Row: {
+          client_id: number | null
+          id: string
+          project_id: string | null
+          user_id: string
+        }
+        Insert: {
+          client_id?: number | null
+          id?: string
+          project_id?: string | null
+          user_id: string
+        }
+        Update: {
+          client_id?: number | null
+          id?: string
+          project_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_client"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_project"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       files: {
         Row: {
           created_at: string

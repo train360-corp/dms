@@ -45,7 +45,6 @@ export const sections: readonly NavSection[] = [
         name: "My Clients",
         url: "/dashboard/my-clients",
         icon: IconDatabaseStar,
-        isComingSoon: true
       },
       {
         name: "My Projects",

@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function updateSession(request: NextRequest) {
-  // Create a single response object up front
+
   const response = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -32,13 +32,13 @@ export async function updateSession(request: NextRequest) {
     !user &&
     !request.nextUrl.pathname.startsWith("/login") &&
     !request.nextUrl.pathname.startsWith("/auth") &&
-    !request.nextUrl.pathname.startsWith("/env.js")
+    !request.nextUrl.pathname.startsWith("/env.js") &&
+    request.nextUrl.pathname !== "/"
   ) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);
   }
 
-  // ✅ Return the response with cookies properly attached
   return response;
 }

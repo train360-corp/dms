@@ -7,11 +7,11 @@ export const columns: readonly {
   header: string;
 }[] = [
   {
+    key: "name",
+    header: "Name"
+  },
+  {
     key: "id",
     header: "No.",
   },
-  {
-    key: "name",
-    header: "Name"
-  }
 ];
