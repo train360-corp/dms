@@ -19,7 +19,7 @@ export default function ClientsTable({ clients, noRowsText, loading }: {
   loading?: boolean;
 }) {
 
-  const isLoading = useDebounce(loading ?? false, 250);
+  const isLoading = useDebounce(loading ?? false, 500);
 
   return (
     <div className="flex flex-col gap-4 overflow-auto overflow-hidden rounded-lg border">

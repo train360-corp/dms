@@ -32,6 +32,7 @@ export const FileBrowser = async ({ client, project, directoryID }: {
       <Table>
         <TableHeader className="bg-muted sticky top-0 z-10">
           <TableRow>
+            <TableHead />
             {columns.map((col, index) => (
               <TableHead key={index} className={`last:text-right`}>
                 {col.header}
