@@ -7,7 +7,7 @@ import { sections } from "@train360-corp/dms/components/nav-items";
 
 
 
-export function NavSectionButton({sectionNumber, itemNumber}: {
+export function NavSectionButton({ sectionNumber, itemNumber }: {
   sectionNumber: number;
   itemNumber: number;
 }) {

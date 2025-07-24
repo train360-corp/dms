@@ -6,7 +6,7 @@ import { columns } from "@train360-corp/dms/components/clients-table-columns";
 import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
 import { useRouter } from "next/navigation";
 import { BuildingIcon, FolderOpenIcon } from "lucide-react";
-import { IconDatabasePlus, IconDotsVertical } from "@tabler/icons-react";
+import { IconDatabaseMinus, IconDatabasePlus, IconDotsVertical } from "@tabler/icons-react";
 import { Button } from "@train360-corp/dms/components/ui/button";
 import {
   DropdownMenu,
@@ -40,7 +40,7 @@ export const ClientRow = ({ client }: {
         <BuildingIcon/>
       </TableCell>
       {columns.map((col, index) => (
-        <TableCell key={index}>
+        <TableCell key={index} width={col.width}>
           {client[col.key]}
         </TableCell>
       ))}
@@ -69,7 +69,7 @@ export const ClientRow = ({ client }: {
               >
                 {`${favorite ? "Remove from" : "Add to"} My Clients`}
                 <DropdownMenuShortcut>
-                  <IconDatabasePlus/>
+                  {favorite ? <IconDatabaseMinus/> : <IconDatabasePlus/>}
                 </DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuGroup>

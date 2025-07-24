@@ -15,7 +15,8 @@ export const ProjectRow = ({ project }: {
   const router = useRouter();
 
   return (
-    <TableRow className={"cursor-pointer"} onClick={() => router.push(`/dashboard/clients/${project.client_id}/${project.project_number}`)}>
+    <TableRow className={"cursor-pointer"}
+              onClick={() => router.push(`/dashboard/clients/${project.client_id}/${project.project_number}`)}>
       {columns.map((col, index) => (
         <TableCell key={index}>
           {project[col.key]}

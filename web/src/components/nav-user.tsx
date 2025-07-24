@@ -15,7 +15,6 @@ import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
 import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { User } from "@supabase/auth-js";
 import { redirect } from "next/navigation";
-import { NavUserLogout } from "@train360-corp/dms/components/nav-user-logout";
 
 
 

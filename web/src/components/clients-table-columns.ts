@@ -5,6 +5,7 @@ import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
 export const columns: readonly {
   key: keyof Tables<"clients">;
   header: string;
+  width?: number;
 }[] = [
   {
     key: "name",
@@ -13,5 +14,6 @@ export const columns: readonly {
   {
     key: "id",
     header: "No.",
+    width: 50
   },
 ];

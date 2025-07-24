@@ -1,6 +1,5 @@
 "use client";
 
-import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import * as React from "react";
 import { H1 } from "@train360-corp/dms/components/ui/text";
 import ClientsTable from "@train360-corp/dms/components/clients-table";
@@ -12,15 +11,15 @@ export default function Page() {
 
   const { rows: favorites } = useRealtimeRows({
     table: "favorites"
-  })
+  });
   const { rows } = useRealtimeRows({
     table: "clients"
   });
 
   const ids = (favorites ?? []).filter(c => c.client_id !== null).reduce((a, c) => {
     if (a.includes(c.client_id as number)) return a;
-    return [...a, c.client_id as number];
-  } , [] as number[]);
+    return [ ...a, c.client_id as number ];
+  }, [] as number[]);
   const clients = (rows ?? []).filter(row => ids.includes(row.id));
 
   return (
@@ -32,6 +31,7 @@ export default function Page() {
         <ClientsTable
           clients={clients}
           noRowsText={"Looks like you haven't added a client yet! Add one to continue."}
+          loading={rows === undefined}
         />
 
       </div>

@@ -1,5 +1,7 @@
-import * as React from "react"
+import * as React from "react";
 import { cn } from "@train360-corp/dms/lib/utils";
+
+
 
 export const H1 = React.forwardRef<
   HTMLHeadingElement,
@@ -15,8 +17,8 @@ export const H1 = React.forwardRef<
   >
     {children}
   </h1>
-))
-H1.displayName = "H1"
+));
+H1.displayName = "H1";
 
 export const H2 = React.forwardRef<
   HTMLHeadingElement,
@@ -32,8 +34,8 @@ export const H2 = React.forwardRef<
   >
     {children}
   </h2>
-))
-H2.displayName = "H2"
+));
+H2.displayName = "H2";
 
 export const H3 = React.forwardRef<
   HTMLHeadingElement,
@@ -49,8 +51,8 @@ export const H3 = React.forwardRef<
   >
     {children}
   </h3>
-))
-H3.displayName = "H3"
+));
+H3.displayName = "H3";
 
 export const H4 = React.forwardRef<
   HTMLHeadingElement,
@@ -66,8 +68,8 @@ export const H4 = React.forwardRef<
   >
     {children}
   </h4>
-))
-H4.displayName = "H4"
+));
+H4.displayName = "H4";
 
 export const P = React.forwardRef<
   HTMLParagraphElement,
@@ -80,8 +82,8 @@ export const P = React.forwardRef<
   >
     {children}
   </p>
-))
-P.displayName = "P"
+));
+P.displayName = "P";
 
 export const Blockquote = React.forwardRef<
   HTMLQuoteElement,
@@ -94,8 +96,8 @@ export const Blockquote = React.forwardRef<
   >
     {children}
   </blockquote>
-))
-Blockquote.displayName = "Blockquote"
+));
+Blockquote.displayName = "Blockquote";
 
 export const List = React.forwardRef<
   HTMLUListElement,
@@ -108,8 +110,8 @@ export const List = React.forwardRef<
   >
     {children}
   </ul>
-))
-List.displayName = "List"
+));
+List.displayName = "List";
 
 export const InlineCode = React.forwardRef<
   HTMLElement,
@@ -125,5 +127,5 @@ export const InlineCode = React.forwardRef<
   >
     {children}
   </code>
-))
-InlineCode.displayName = "InlineCode"
+));
+InlineCode.displayName = "InlineCode";

@@ -19,6 +19,6 @@ export const NavUserLogout = () => {
       <IconLogout/>
       Log out
     </DropdownMenuItem>
-  )
+  );
 
-}
+};

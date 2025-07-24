@@ -1,10 +1,6 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@train360-corp/dms/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@train360-corp/dms/components/ui/card";
+
+
 
 export default function Page() {
   return (
@@ -26,5 +22,5 @@ export default function Page() {
         </div>
       </div>
     </div>
-  )
+  );
 }

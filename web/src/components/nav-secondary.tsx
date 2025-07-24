@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { type Icon } from "@tabler/icons-react"
+import * as React from "react";
+import { type Icon } from "@tabler/icons-react";
 
 import {
   SidebarGroup,
@@ -9,12 +9,14 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@train360-corp/dms/components/ui/sidebar"
+} from "@train360-corp/dms/components/ui/sidebar";
+
+
 
 export function NavSecondary({
-  items,
-  ...props
-}: {
+                               items,
+                               ...props
+                             }: {
   items: {
     title: string
     url: string
@@ -29,7 +31,7 @@ export function NavSecondary({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
                 <a href={item.url}>
-                  <item.icon />
+                  <item.icon/>
                   <span>{item.title}</span>
                 </a>
               </SidebarMenuButton>
@@ -38,5 +40,5 @@ export function NavSecondary({
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
-  )
+  );
 }

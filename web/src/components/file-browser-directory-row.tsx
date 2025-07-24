@@ -9,14 +9,15 @@ import { columns } from "@train360-corp/dms/components/file-browser-directory-co
 
 
 
-export default function FileBrowserDirectoryRow({directory, project}: {
+export default function FileBrowserDirectoryRow({ directory, project }: {
   directory: Tables<"directories">;
   project: Tables<"projects">;
 }) {
   const router = useRouter();
 
   return (
-    <TableRow className={"cursor-pointer"} onClick={() => router.push(`/dashboard/clients/${project.client_id}/${project.project_number}/${directory.id}`)}>
+    <TableRow className={"cursor-pointer"}
+              onClick={() => router.push(`/dashboard/clients/${project.client_id}/${project.project_number}/${directory.id}`)}>
       {columns.map((col, index) => (
         <TableCell key={index} className={"last:text-right"}>
           {col.formatter ? col.formatter(directory[col.key]) : directory[col.key]}
