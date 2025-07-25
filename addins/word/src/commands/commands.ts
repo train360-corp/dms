@@ -31,5 +31,21 @@ function action(event: Office.AddinCommands.Event) {
   event.completed();
 }
 
+export function showDialog() {
+  Office.context.ui.displayDialogAsync(
+    new URL("/dialog.html", window.location.origin).toString(),
+    { height: 50, width: 50 },
+    (result) => {
+      const dialog = result.value;
+      dialog.addEventHandler(Office.EventType.DialogMessageReceived, (args) => {
+        if("message" in args) console.log("Message from dialog:", args.message);
+        else console.error(args.error);
+      });
+    }
+  );
+}
+
+Office.actions.associate("showDialog", showDialog);
+
 // Register the function with Office.
 Office.actions.associate("action", action);
