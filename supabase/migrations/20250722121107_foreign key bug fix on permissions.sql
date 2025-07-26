@@ -65,7 +65,7 @@ using ((EXISTS ( SELECT 1
    FROM projects
   WHERE ((projects.id = directories.project_id) AND ((projects.access = ANY (ARRAY['DELETE'::access, 'ADMIN'::access])) OR (EXISTS ( SELECT 1
            FROM permissions p
-          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id)))))))));
+          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id) AND (p.level = ANY (ARRAY['DELETE'::access, 'ADMIN'::access]))))))))));
 
 
 create policy "Insert directories based on project access"
@@ -77,7 +77,7 @@ with check ((EXISTS ( SELECT 1
    FROM projects
   WHERE ((projects.id = directories.project_id) AND ((projects.access = ANY (ARRAY['EDIT'::access, 'ADMIN'::access])) OR (EXISTS ( SELECT 1
            FROM permissions p
-          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id)))))))));
+          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id) AND (p.level = ANY (ARRAY['EDIT'::access, 'DELETE'::access, 'ADMIN'::access]))))))))));
 
 
 create policy "Select directories based on project access"
@@ -89,7 +89,7 @@ using ((EXISTS ( SELECT 1
    FROM projects
   WHERE ((projects.id = directories.project_id) AND ((projects.access = ANY (ARRAY['READ'::access, 'EDIT'::access, 'DELETE'::access, 'ADMIN'::access])) OR (EXISTS ( SELECT 1
            FROM permissions p
-          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id)))))))));
+          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id) AND (p.level = ANY (ARRAY['READ'::access, 'EDIT'::access, 'DELETE'::access, 'ADMIN'::access]))))))))));
 
 
 create policy "Update directories based on project access"
@@ -101,12 +101,12 @@ using ((EXISTS ( SELECT 1
    FROM projects
   WHERE ((projects.id = directories.project_id) AND ((projects.access = ANY (ARRAY['EDIT'::access, 'ADMIN'::access])) OR (EXISTS ( SELECT 1
            FROM permissions p
-          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id)))))))))
+          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id) AND (p.level = ANY (ARRAY['EDIT'::access, 'DELETE'::access, 'ADMIN'::access]))))))))))
 with check ((EXISTS ( SELECT 1
    FROM projects
   WHERE ((projects.id = directories.project_id) AND ((projects.access = ANY (ARRAY['EDIT'::access, 'ADMIN'::access])) OR (EXISTS ( SELECT 1
            FROM permissions p
-          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id)))))))));
+          WHERE ((p.user_id = ( SELECT auth.uid() AS uid)) AND (p.project_id = projects.id) AND (p.level = ANY (ARRAY['EDIT'::access, 'DELETE'::access, 'ADMIN'::access]))))))))));
 
 
 create policy "all: admin"
