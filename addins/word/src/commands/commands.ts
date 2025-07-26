@@ -31,7 +31,7 @@ function action(event: Office.AddinCommands.Event) {
   event.completed();
 }
 
-export function showDialog() {
+export function showDialog(event: Office.AddinCommands.Event) {
   Office.context.ui.displayDialogAsync(
     new URL("/dialog.html", window.location.origin).toString(),
     { height: 50, width: 50 },
@@ -43,6 +43,7 @@ export function showDialog() {
       });
     }
   );
+  event.completed();
 }
 
 Office.actions.associate("showDialog", showDialog);

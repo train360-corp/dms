@@ -4,6 +4,8 @@ const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const path = require("path");
+
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
@@ -35,6 +37,9 @@ module.exports = async (env, options) => {
     },
     resolve: {
       extensions: [".ts", ".tsx", ".html", ".js"],
+      alias: {
+        "@addin": path.resolve(__dirname, "src"),
+      },
     },
     module: {
       rules: [
@@ -49,6 +54,10 @@ module.exports = async (env, options) => {
           test: /\.tsx?$/,
           exclude: /node_modules/,
           use: ["ts-loader"],
+        },
+        {
+          test: /\.css$/i,
+          use: ["style-loader", "css-loader", "postcss-loader"],
         },
         {
           test: /\.html$/,

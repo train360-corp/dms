@@ -21,7 +21,10 @@
     "pretty": true,
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "paths": {
+      "@addin/*": ["./src/*"]
+    },
   },
   "exclude": [
     "node_modules"
