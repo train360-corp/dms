@@ -13,8 +13,8 @@ values
         NULL
     ),
     (
-        'READ',
+        'EDIT',
         (select id from auth.users where email = 'harvey@pearsonspecter.com'),
         NULL,
         (select id from public.projects where name = 'Macrodata Refinement')
-    )
+    );
