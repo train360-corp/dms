@@ -5,10 +5,124 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { columns } from "@train360-corp/dms/components/file-browser-directory-columns";
 import { useRealtimeRows } from "@train360-corp/dms/hooks/use-realtime-rows";
 import { useDebounce } from "@uidotdev/usehooks";
-import { IconFolder } from "@tabler/icons-react";
+import { IconDotsVertical, IconFolder } from "@tabler/icons-react";
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
+import { Skeleton } from "@train360-corp/dms/components/ui/skeleton";
+import { Button } from "@train360-corp/dms/components/ui/button";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { DefaultExtensionType, defaultStyles, FileIcon } from "react-file-icon";
+import * as mime from "react-native-mime-types";
+import { createClient } from "@train360-corp/dms/lib/supabase/client";
+import { Camelize, FileObjectV2 } from "@supabase/storage-js";
+import { NIL } from "uuid";
 
+
+
+const SkeletonRow = () => (
+  <TableRow>
+    <TableCell>
+      <Loader className={"text-muted"}/>
+    </TableCell>
+    {columns.map((_, index) => (
+      <TableCell key={index} width={"50px"}>
+        <Skeleton className="h-4 w-[50px]"/>
+      </TableCell>
+    ))}
+    <TableCell align={"right"}>
+      <Button disabled variant={"ghost"} size="icon" className="size-8">
+        <IconDotsVertical/>
+      </Button>
+    </TableCell>
+  </TableRow>
+);
+
+const NoneRow = () => (
+  <TableRow>
+    <TableCell
+      colSpan={columns.length + 2}
+      className="h-24 text-center"
+    >
+      {"Looks like you haven't created anything yet! Create something to get started."}
+    </TableCell>
+  </TableRow>
+);
+
+const DirectoryRow = ({ directory, project, router }: {
+  directory: Tables<"directories">;
+  project: Tables<"projects">;
+  router: AppRouterInstance;
+}) => (
+  <TableRow
+    key={directory.id}
+    className={"cursor-pointer"}
+    onClick={() => router.push(`/dashboard/clients/${project.client_id}/${project.project_number}/${directory.id}`)}
+  >
+    <TableCell>
+      <IconFolder/>
+    </TableCell>
+    {columns.map((col, index) => (
+      <TableCell key={index} className={"last:text-right"}>
+        {col.formatter ? col.formatter(directory[col.key]) : directory[col.key]}
+      </TableCell>
+    ))}
+    <TableCell align={"right"}>
+      <Button disabled variant={"ghost"} size="icon" className="size-8">
+        <IconDotsVertical/>
+      </Button>
+    </TableCell>
+  </TableRow>
+);
+
+
+const SymlinkRow = ({ symlink, project, router }: {
+  symlink: Tables<"symlinks">;
+  project: Tables<"projects">;
+  router: AppRouterInstance;
+}) => {
+
+  const [ object, setObject ] = useState<Camelize<FileObjectV2> | null>();
+
+  const isLoading = object === undefined;
+  const extension = (mime.extension(object?.contentType ?? "...") || "...") as DefaultExtensionType;
+
+  useEffect(() => {
+    (async () => {
+      const supabase = createClient();
+      const { data: file } = await supabase.from("files").select("*, current_version_id (*)").eq("id", symlink.file_id).single();
+      const { data: object } = await supabase.storage.from(project.id).info(`/${file?.current_version_id?.object_id ?? NIL}`);
+      setObject(object);
+    })();
+  }, [ symlink.id ]);
+
+  if (isLoading) return (<SkeletonRow/>);
+
+  return (
+    <TableRow
+      key={symlink.id}
+      className={"cursor-pointer"}
+      onClick={() => router.push(`/dashboard/clients/${project.client_id}/${project.project_number}/${symlink.directory_id}/${symlink.id}`)}
+    >
+      <TableCell>
+        <div>
+          <FileIcon extension={extension} {...defaultStyles[extension]} />
+        </div>
+      </TableCell>
+      {columns.map((col, index) => (
+        <TableCell key={index} className={"last:text-right"}>
+          {col.formatter ? col.formatter(symlink[col.key]) : symlink[col.key]}
+        </TableCell>
+      ))}
+      <TableCell align={"right"}>
+        <Button disabled variant={"ghost"} size="icon" className="size-8">
+          <IconDotsVertical/>
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
+};
 
 
 const WithOrWithoutSymlinks = ({ directories, symlinks, project }: {
@@ -18,7 +132,7 @@ const WithOrWithoutSymlinks = ({ directories, symlinks, project }: {
 }) => {
 
   const router = useRouter();
-  const loading = useDebounce((directories === undefined || symlinks === undefined), 500);
+  const isLoading = useDebounce((directories === undefined || symlinks === undefined), 500);
   const items = (directories?.length ?? 0) + (symlinks?.length ?? 0);
 
   return (
@@ -31,53 +145,29 @@ const WithOrWithoutSymlinks = ({ directories, symlinks, project }: {
               {col.header}
             </TableHead>
           ))}
+          <TableHead/>
         </TableRow>
       </TableHeader>
       <TableBody className="**:data-[slot=table-cell]:first:w-8">
 
-        {(directories !== undefined) && directories.map((directory, index) => (
-          <TableRow
-            key={directory.id}
-            className={"cursor-pointer"}
-            onClick={() => router.push(`/dashboard/clients/${project.client_id}/${project.project_number}/${directory.id}`)}
-          >
-            <TableCell>
-              <IconFolder/>
-            </TableCell>
-            {columns.map((col, index) => (
-              <TableCell key={index} className={"last:text-right"}>
-                {col.formatter ? col.formatter(directory[col.key]) : directory[col.key]}
-              </TableCell>
+        {isLoading ? (
+          <SkeletonRow/>
+        ) : items === 0 ? (
+          <NoneRow/>
+        ) : (
+          <>
+            {directories!.map((directory) => (
+              <DirectoryRow key={directory.id} directory={directory} project={project} router={router}/>
             ))}
-          </TableRow>
-        ))}
-
-        {symlinks !== undefined && symlinks.map((symlink, index) => (
-          <TableRow
-            key={symlink.id}
-            className={"cursor-pointer"}
-            // onClick={() => router.push(`/dashboard/clients/${project.client_id}/${project.project_number}/${directory.id}`)}
-          >
-            <TableCell>
-              <IconFolder/>
-            </TableCell>
-            {columns.map((col, index) => (
-              <TableCell key={index} className={"last:text-right"}>
-                {col.formatter ? col.formatter(symlink[col.key]) : symlink[col.key]}
-              </TableCell>
+            {symlinks!.map((symlink) => (
+              <SymlinkRow
+                key={symlink.id}
+                symlink={symlink}
+                project={project}
+                router={router}
+              />
             ))}
-          </TableRow>
-        ))}
-
-        {items === 0 && (
-          <TableRow>
-            <TableCell
-              colSpan={columns.length + 1}
-              className="h-24 text-center"
-            >
-              {"Looks like you haven't created anything yet! Create something to get started."}
-            </TableCell>
-          </TableRow>
+          </>
         )}
 
       </TableBody>
