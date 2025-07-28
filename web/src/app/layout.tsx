@@ -22,7 +22,7 @@ export default function RootLayout({
       <script src="/env.js"/>
     </head>
     <body>
-    <Toaster />
+    <Toaster/>
     <ThemeProvider
       attribute="class"
       defaultTheme="system"

@@ -18,7 +18,7 @@ export const FileBrowserDropzoneWrapper = ({ children, project, directory }: {
   directory: Tables<"directories"> | null;
 }) => {
 
-  if(directory === null) return children;
+  if (directory === null) return children;
 
   return (
     <Dropzone

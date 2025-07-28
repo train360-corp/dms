@@ -52,7 +52,7 @@ const WithOrWithoutSymlinks = ({ directories, symlinks, project }: {
           </TableRow>
         ))}
 
-        { symlinks !== undefined && symlinks.map((symlink, index) => (
+        {symlinks !== undefined && symlinks.map((symlink, index) => (
           <TableRow
             key={symlink.id}
             className={"cursor-pointer"}
@@ -67,7 +67,7 @@ const WithOrWithoutSymlinks = ({ directories, symlinks, project }: {
               </TableCell>
             ))}
           </TableRow>
-        )) }
+        ))}
 
         {items === 0 && (
           <TableRow>

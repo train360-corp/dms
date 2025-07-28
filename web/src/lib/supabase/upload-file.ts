@@ -1,7 +1,9 @@
 import * as tus from "tus-js-client";
-import { SupabaseClient } from "@supabase/supabase-js";
 import { DetailedError, OnSuccessPayload } from "tus-js-client";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { v4 } from "uuid";
+
+
 
 export const uploadFile = async (supabase: SupabaseClient, options: {
   file: File,
@@ -24,7 +26,7 @@ export const uploadFile = async (supabase: SupabaseClient, options: {
 
   const upload = new tus.Upload(options.file, {
     endpoint,
-    retryDelays: [0, 3000, 5000, 10000, 20000],
+    retryDelays: [ 0, 3000, 5000, 10000, 20000 ],
     headers: {
       authorization: `Bearer ${supabaseAccessToken}`,
       apikey: window.env?.SUPABASE_ANON_KEY,

@@ -1,9 +1,6 @@
 import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
 import { createClient } from "@train360-corp/dms/lib/supabase/server";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@train360-corp/dms/components/ui/table";
 import { redirect } from "next/navigation";
-import { columns } from "@train360-corp/dms/components/file-browser-directory-columns";
-import FileBrowserDirectoryRow from "@train360-corp/dms/components/file-browser-directory-row";
 import { FileBrowserDropzoneWrapper } from "@train360-corp/dms/components/file-browser-dropzone-wrapper";
 import FileBrowserTable from "@train360-corp/dms/components/file-browser-table";
 
