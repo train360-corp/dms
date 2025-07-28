@@ -7,22 +7,25 @@ import { uploadFile } from "@train360-corp/dms/lib/supabase/upload-file";
 import { createClient } from "@train360-corp/dms/lib/supabase/client";
 import { toast } from "sonner";
 import { PostgrestError } from "@supabase/supabase-js";
-import { error } from "next/dist/build/output/log";
 import { v4 } from "uuid";
+import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
 
 
 
-export const FileBrowserInsert = ({ children, bucket }: {
+export const FileBrowserDropzoneWrapper = ({ children, project, directory }: {
   children: ReactNode;
-  bucket: string;
+  project: Tables<"projects">;
+  directory: Tables<"directories"> | null;
 }) => {
+
+  if(directory === null) return children;
 
   return (
     <Dropzone
       noClick
       onDrop={files => files.forEach(file => uploadFile(createClient(), {
         file,
-        bucket,
+        bucket: project.id,
         onSuccess: async (objectID) => {
           const supabase = createClient();
 
@@ -31,23 +34,26 @@ export const FileBrowserInsert = ({ children, bucket }: {
             toast.error("Request Failed", {
               description: "An unknown error occurred."
             });
-          }
+          };
 
           // create the file
           const fileID = v4();
-          const {error: createFileError} = await supabase.from("files").insert({ id: fileID });
+          const { error: createFileError } = await supabase.from("files").insert({ id: fileID });
           if (createFileError) return handleError(createFileError);
 
           // create the file version
-          const {error: createFileVersionError} = await supabase.from("files_versions").insert({
+          const { error: createFileVersionError } = await supabase.from("files_versions").insert({
             object_id: objectID,
             file_id: fileID,
             version: 1,
           });
           if (createFileVersionError) return handleError(createFileVersionError);
 
-          // TODO: create the symlink to the file in the directory
-
+          const { error: createSymlinkError } = await supabase.from("symlinks").insert({
+            directory_id: directory!.id,
+            file_id: fileID,
+          });
+          if (createSymlinkError) return handleError(createSymlinkError);
         },
         onError: error => {
           if ("originalResponse" in error && error.originalResponse?.getStatus() === 403) toast.error("Permission Denied", {
