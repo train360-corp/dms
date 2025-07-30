@@ -5,12 +5,44 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "tsc && electron .",
+    "build": "tsc && electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "build": {
+    "appId": "com.projdocs",
+    "productName": "ProjDocs",
+    "files": ["dist/**/*", "public/**/*"],
+    "extraResources": [
+      "icon.png"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "protocols": [
+      {
+        "name": "ProjDocs Protocol",
+        "schemes": [
+          "projdocs"
+        ]
+      }
+    ],
+    "electronVersion": "37.2.4"
+  },
   "devDependencies": {
-    "electron": "^37.2.4"
+    "@types/electron": "^1.4.38",
+    "@types/node": "^22.17.0",
+    "electron": "37.2.4",
+    "electron-builder": "^26.0.12",
+    "typescript": "^5.8.3"
   }
 }
