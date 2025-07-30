@@ -18,7 +18,9 @@ import {
 import { useRealtimeRows } from "@train360-corp/dms/hooks/use-realtime-rows";
 import { Badge } from "@train360-corp/dms/components/ui/badge";
 import { H4, P } from "@train360-corp/dms/components/ui/text";
-import { Label } from "@train360-corp/dms/components/ui/label";
+import { Separator } from "@train360-corp/dms/components/ui/separator";
+import { Button } from "@train360-corp/dms/components/ui/button";
+import { IconDownload, IconFolderPlus, IconLink, IconSend } from "@tabler/icons-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@train360-corp/dms/components/ui/tooltip";
 
 
@@ -91,14 +93,18 @@ export const FileViewer = (props: {
 
   return (
     <div className="h-full w-full overflow-auto flex flex-row gap-4 md:gap-6">
+
+      {/* VIEWER */}
       <Card className={"py-0 w-full"}>
         <FileViewers blob={state.data}/>
       </Card>
-      <Card className={"p-4 w-[33%]"}>
+
+      {/* SIDEBAR */}
+      <Card className={"p-4 w-[33%] max-w-[33%]"}>
 
         <div className="flex flex-col gap-1">
           <Badge variant={"secondary"} className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
-            {props.file.number}
+            {`File No. ${props.file.number}`}
           </Badge>
 
           <H4 className={"max-w-full truncate"}>{state.version.name}</H4>
@@ -120,18 +126,29 @@ export const FileViewer = (props: {
               <SelectGroup>
                 <SelectLabel>{"Versions"}</SelectLabel>
                 {versions.rows?.map((version) => (
-                  <SelectItem
-                    key={version.id}
-                    value={state.version.id}
-                  >
-                    <div className={"flex flex-row gap-2 items-center"}>
-                      <Badge variant={"secondary"} className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
+                  <SelectItem key={version.id} value={state.version.id}>
+                    <div className="w-full flex flex-row items-center gap-2 whitespace-nowrap">
+                      <Badge
+                        variant="secondary"
+                        className="h-5 min-w-5 shrink-0 rounded-full px-1 font-mono tabular-nums"
+                      >
                         {version.version}
                       </Badge>
+
+                      {/* Name text grows and truncates */}
                       {version.name.trim() ? (
-                        <P className={"max-w-3/4 truncate"}>{version.name.trim()}</P>
+                        <P className="flex-1 truncate">{version.name.trim()}</P>
                       ) : (
-                        <P className={"text-muted"}>{"Unnamed version"}</P>
+                        <P className="flex-1 text-muted truncate">Unnamed version</P>
+                      )}
+
+                      {version.id === (props.file.current_version_id ?? NIL) && (
+                        <Badge
+                          variant="default"
+                          className="h-5 min-w-5 shrink-0 rounded-full px-1 font-mono tabular-nums dark:text-white"
+                        >
+                          Current
+                        </Badge>
                       )}
                     </div>
                   </SelectItem>
@@ -139,6 +156,56 @@ export const FileViewer = (props: {
               </SelectGroup>
             </SelectContent>
           </Select>
+        </div>
+
+        <Separator orientation={"horizontal"}/>
+
+        <div className={"flex flex-row gap-4 w-full justify-center"}>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={"outline"} size={"icon"}>
+                <IconDownload size={"icon"}/>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <P>{"Download"}</P>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={"outline"} size={"icon"}>
+                <IconLink size={"icon"}/>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <P>{"Copy Link"}</P>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={"outline"} size={"icon"}>
+                <IconFolderPlus size={"icon"}/>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <P>{"Add to Folder"}</P>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={"outline"} size={"icon"}>
+                <IconSend size={"icon"}/>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <P>{"Send a Copy"}</P>
+            </TooltipContent>
+          </Tooltip>
+
         </div>
       </Card>
     </div>
