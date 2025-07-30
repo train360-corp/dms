@@ -17,7 +17,9 @@ import {
 } from "@train360-corp/dms/components/ui/select";
 import { useRealtimeRows } from "@train360-corp/dms/hooks/use-realtime-rows";
 import { Badge } from "@train360-corp/dms/components/ui/badge";
-import {P} from "@train360-corp/dms/components/ui/text";
+import { H4, P } from "@train360-corp/dms/components/ui/text";
+import { Label } from "@train360-corp/dms/components/ui/label";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@train360-corp/dms/components/ui/tooltip";
 
 
 
@@ -85,7 +87,7 @@ export const FileViewer = (props: {
     })();
   }, [ state.version ]);
 
-  if (state.data === null || state.data === undefined) return null;
+  if (state.data === null || state.data === undefined || versions.rows === undefined) return null;
 
   return (
     <div className="h-full w-full overflow-auto flex flex-row gap-4 md:gap-6">
@@ -93,40 +95,51 @@ export const FileViewer = (props: {
         <FileViewers blob={state.data}/>
       </Card>
       <Card className={"p-4 w-[33%]"}>
-        <Select
-          disabled={!state.version || versions.loading}
-          value={state.version?.id}
-          onValueChange={(versionID) => setState({
-            version: versions.rows?.find((v) => v.id === versionID),
-            data: undefined
-          })}
-        >
-          <SelectTrigger className={"w-full"}>
-            <SelectValue placeholder="Select a fruit"/>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>{"Versions"}</SelectLabel>
-              {versions.rows?.map((version) => (
-                <SelectItem
-                  key={version.id}
-                  value={state.version.id}
-                >
-                  <div className={"flex flex-row gap-2 items-center"}>
-                    <Badge variant={"secondary"} className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
-                      {version.version}
-                    </Badge>
-                    {version.name.trim() ? (
-                      <P>{version.name.trim()}</P>
-                    ) : (
-                      <P className={"text-muted"}>{"Unnamed version"}</P>
-                    )}
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+
+        <div className="flex flex-col gap-1">
+          <Badge variant={"secondary"} className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
+            {props.file.number}
+          </Badge>
+
+          <H4 className={"max-w-full truncate"}>{state.version.name}</H4>
+        </div>
+
+        <div className={"flex flex-col w-full gap-1"}>
+          <P className={"text-xs"}>{"Viewing Version"}</P>
+          <Select
+            value={state.version.id}
+            onValueChange={(versionID) => setState({
+              version: versions.rows?.find((v) => v.id === versionID),
+              data: undefined
+            })}
+          >
+            <SelectTrigger className={"w-full"}>
+              <SelectValue placeholder="Select a version"/>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>{"Versions"}</SelectLabel>
+                {versions.rows?.map((version) => (
+                  <SelectItem
+                    key={version.id}
+                    value={state.version.id}
+                  >
+                    <div className={"flex flex-row gap-2 items-center"}>
+                      <Badge variant={"secondary"} className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
+                        {version.version}
+                      </Badge>
+                      {version.name.trim() ? (
+                        <P className={"max-w-3/4 truncate"}>{version.name.trim()}</P>
+                      ) : (
+                        <P className={"text-muted"}>{"Unnamed version"}</P>
+                      )}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </Card>
     </div>
   );

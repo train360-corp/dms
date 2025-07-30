@@ -848,16 +848,19 @@ export type Database = {
           created_at: string
           current_version_id: string | null
           id: string
+          number: number
         }
         Insert: {
           created_at?: string
           current_version_id?: string | null
           id?: string
+          number?: number
         }
         Update: {
           created_at?: string
           current_version_id?: string | null
           id?: string
+          number?: number
         }
         Relationships: [
           {
@@ -1437,7 +1440,7 @@ export type Database = {
         Returns: undefined
       }
       can_insert_object: {
-        Args: { owner: string; bucketid: string; metadata: Json; name: string }
+        Args: { metadata: Json; bucketid: string; name: string; owner: string }
         Returns: undefined
       }
       delete_prefix: {
@@ -1493,17 +1496,17 @@ export type Database = {
       list_objects_with_delimiter: {
         Args: {
           delimiter_param: string
-          start_after?: string
+          next_token?: string
           max_keys?: number
           bucket_id: string
           prefix_param: string
-          next_token?: string
+          start_after?: string
         }
         Returns: {
-          id: string
           name: string
           updated_at: string
           metadata: Json
+          id: string
         }[]
       }
       operation: {

@@ -40,19 +40,16 @@ export default async function Page(props: {
   return (
     <PageContent className={"gap-2 md:gap-2"}>
       <div className="flex flex-row items-center gap-2">
-
-        <BackButton
-          client={client.data}
-          project={project.data}
-          directory={directory.data}
-        />
-
         <Link href={`/dashboard/clients/${client.data.id}`}>
           <P className="cursor-pointer hover:underline">{client.data.name}</P>
         </Link>
         <P>{"·"}</P>
         <Link href={`/dashboard/clients/${client.data.id}/${project.data.project_number}`}>
           <P className="cursor-pointer hover:underline">{project.data.name}</P>
+        </Link>
+        <P>{"·"}</P>
+        <Link href={`/dashboard/clients/${client.data.id}/${project.data.project_number}/${symlink.data.directory_id}`}>
+          <P className="cursor-pointer hover:underline">{directory.data.name}</P>
         </Link>
       </div>
 
