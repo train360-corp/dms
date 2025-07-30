@@ -22,6 +22,7 @@ import { Separator } from "@train360-corp/dms/components/ui/separator";
 import { Button } from "@train360-corp/dms/components/ui/button";
 import { IconDownload, IconFolderPlus, IconLink, IconSend } from "@tabler/icons-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@train360-corp/dms/components/ui/tooltip";
+import { Skeleton } from "@train360-corp/dms/components/ui/skeleton";
 
 
 
@@ -89,125 +90,136 @@ export const FileViewer = (props: {
     })();
   }, [ state.version ]);
 
-  if (state.data === null || state.data === undefined || versions.rows === undefined) return null;
-
   return (
     <div className="h-full w-full overflow-auto flex flex-row gap-4 md:gap-6">
 
-      {/* VIEWER */}
-      <Card className={"py-0 w-full"}>
-        <FileViewers blob={state.data}/>
-      </Card>
+      {(state.data === null || state.data === undefined || versions.rows === undefined) ? (
+        <>
+          <Skeleton className={"w-full h-full rounded-xl"} />
+          <Skeleton className={"w-[33%] h-full rounded-xl max-w-[33%]"} />
+        </>
+      ) : (
+        <>
 
-      {/* SIDEBAR */}
-      <Card className={"p-4 w-[33%] max-w-[33%]"}>
+          {/* VIEWER */}
+          <Card className={"py-0 w-full"}>
+            <FileViewers blob={state.data}/>
+          </Card>
 
-        <div className="flex flex-col gap-1">
-          <Badge variant={"secondary"} className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
-            {`File No. ${props.file.number}`}
-          </Badge>
+          {/* SIDEBAR */}
+          <Card className={"p-4 w-[33%] max-w-[33%]"}>
 
-          <H4 className={"max-w-full truncate"}>{state.version.name}</H4>
-        </div>
+            <div className="flex flex-col gap-1">
+              <Badge variant={"secondary"} className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
+                {`File No. ${props.file.number}`}
+              </Badge>
 
-        <div className={"flex flex-col w-full gap-1"}>
-          <P className={"text-xs"}>{"Viewing Version"}</P>
-          <Select
-            value={state.version.id}
-            onValueChange={(versionID) => setState({
-              version: versions.rows?.find((v) => v.id === versionID),
-              data: undefined
-            })}
-          >
-            <SelectTrigger className={"w-full"}>
-              <SelectValue placeholder="Select a version"/>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>{"Versions"}</SelectLabel>
-                {versions.rows?.map((version) => (
-                  <SelectItem key={version.id} value={state.version.id}>
-                    <div className="w-full flex flex-row items-center gap-2 whitespace-nowrap">
-                      <Badge
-                        variant="secondary"
-                        className="h-5 min-w-5 shrink-0 rounded-full px-1 font-mono tabular-nums"
-                      >
-                        {version.version}
-                      </Badge>
+              <H4 className={"max-w-full truncate"}>{state.version.name}</H4>
+            </div>
 
-                      {/* Name text grows and truncates */}
-                      {version.name.trim() ? (
-                        <P className="flex-1 truncate">{version.name.trim()}</P>
-                      ) : (
-                        <P className="flex-1 text-muted truncate">Unnamed version</P>
-                      )}
+            <div className={"flex flex-col w-full gap-1"}>
+              <P className={"text-xs"}>{"Viewing Version"}</P>
+              <Select
+                value={state.version.id}
+                onValueChange={(versionID) => setState({
+                  version: versions.rows?.find((v) => v.id === versionID),
+                  data: undefined
+                })}
+              >
+                <SelectTrigger className={"w-full"}>
+                  <SelectValue placeholder="Select a version"/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>{"Versions"}</SelectLabel>
+                    {versions.rows?.map((version) => (
+                      <SelectItem key={version.id} value={state.version.id}>
+                        <div className="w-full flex flex-row items-center gap-2 whitespace-nowrap">
+                          <Badge
+                            variant="secondary"
+                            className="h-5 min-w-5 shrink-0 rounded-full px-1 font-mono tabular-nums"
+                          >
+                            {version.version}
+                          </Badge>
 
-                      {version.id === (props.file.current_version_id ?? NIL) && (
-                        <Badge
-                          variant="default"
-                          className="h-5 min-w-5 shrink-0 rounded-full px-1 font-mono tabular-nums dark:text-white"
-                        >
-                          Current
-                        </Badge>
-                      )}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+                          {/* Name text grows and truncates */}
+                          {version.name.trim() ? (
+                            <P className="flex-1 truncate">{version.name.trim()}</P>
+                          ) : (
+                            <P className="flex-1 text-muted truncate">Unnamed version</P>
+                          )}
 
-        <Separator orientation={"horizontal"}/>
+                          {version.id === (props.file.current_version_id ?? NIL) && (
+                            <Badge
+                              variant="default"
+                              className="h-5 min-w-5 shrink-0 rounded-full px-1 font-mono tabular-nums dark:text-white"
+                            >
+                              Current
+                            </Badge>
+                          )}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
 
-        <div className={"flex flex-row gap-4 w-full justify-center"}>
+            <Separator orientation={"horizontal"}/>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant={"outline"} size={"icon"}>
-                <IconDownload size={"icon"}/>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <P>{"Download"}</P>
-            </TooltipContent>
-          </Tooltip>
+            <div className={"flex flex-row gap-4 w-full justify-center"}>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant={"outline"} size={"icon"}>
-                <IconLink size={"icon"}/>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <P>{"Copy Link"}</P>
-            </TooltipContent>
-          </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a href={URL.createObjectURL(state.data)} download>
+                    <Button variant={"outline"} size={"icon"}>
+                      <IconDownload size={"icon"}/>
+                    </Button>
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <P>{"Download"}</P>
+                </TooltipContent>
+              </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant={"outline"} size={"icon"}>
-                <IconFolderPlus size={"icon"}/>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <P>{"Add to Folder"}</P>
-            </TooltipContent>
-          </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button disabled variant={"outline"} size={"icon"}>
+                    <IconLink size={"icon"}/>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <P>{"Copy Link"}</P>
+                </TooltipContent>
+              </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant={"outline"} size={"icon"}>
-                <IconSend size={"icon"}/>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <P>{"Send a Copy"}</P>
-            </TooltipContent>
-          </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button disabled variant={"outline"} size={"icon"}>
+                    <IconFolderPlus size={"icon"}/>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <P>{"Add to Folder"}</P>
+                </TooltipContent>
+              </Tooltip>
 
-        </div>
-      </Card>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button disabled variant={"outline"} size={"icon"}>
+                    <IconSend size={"icon"}/>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <P>{"Send a Copy"}</P>
+                </TooltipContent>
+              </Tooltip>
+
+            </div>
+          </Card>
+
+        </>
+      )}
     </div>
   );
 };
