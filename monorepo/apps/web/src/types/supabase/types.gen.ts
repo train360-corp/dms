@@ -1067,8 +1067,26 @@ export type Database = {
         Returns: string
       }
       has_admin_permission: {
-        Args: { _client_id: number; _user: string; _project_id: string }
+        Args: { _project_id: string; _client_id: number; _user: string }
         Returns: boolean
+      }
+      "storage.objects.get_object_by_id": {
+        Args: { object_id: string }
+        Returns: {
+          bucket_id: string | null
+          created_at: string | null
+          id: string
+          last_accessed_at: string | null
+          level: number | null
+          metadata: Json | null
+          name: string | null
+          owner: string | null
+          owner_id: string | null
+          path_tokens: string[] | null
+          updated_at: string | null
+          user_metadata: Json | null
+          version: string | null
+        }
       }
     }
     Enums: {
@@ -1440,7 +1458,7 @@ export type Database = {
         Returns: undefined
       }
       can_insert_object: {
-        Args: { metadata: Json; bucketid: string; name: string; owner: string }
+        Args: { name: string; owner: string; metadata: Json; bucketid: string }
         Returns: undefined
       }
       delete_prefix: {
@@ -1480,33 +1498,33 @@ export type Database = {
       }
       list_multipart_uploads_with_delimiter: {
         Args: {
-          next_upload_token?: string
-          next_key_token?: string
-          max_keys?: number
-          delimiter_param: string
-          prefix_param: string
           bucket_id: string
+          delimiter_param: string
+          max_keys?: number
+          next_key_token?: string
+          next_upload_token?: string
+          prefix_param: string
         }
         Returns: {
           key: string
-          created_at: string
           id: string
+          created_at: string
         }[]
       }
       list_objects_with_delimiter: {
         Args: {
-          delimiter_param: string
-          next_token?: string
-          max_keys?: number
-          bucket_id: string
           prefix_param: string
+          delimiter_param: string
+          max_keys?: number
           start_after?: string
+          next_token?: string
+          bucket_id: string
         }
         Returns: {
           name: string
-          updated_at: string
-          metadata: Json
           id: string
+          metadata: Json
+          updated_at: string
         }[]
       }
       operation: {
@@ -1515,12 +1533,12 @@ export type Database = {
       }
       search: {
         Args: {
-          search?: string
           prefix: string
           bucketname: string
           limits?: number
           levels?: number
           offsets?: number
+          search?: string
           sortcolumn?: string
           sortorder?: string
         }
@@ -1535,14 +1553,14 @@ export type Database = {
       }
       search_legacy_v1: {
         Args: {
-          search?: string
-          prefix: string
           bucketname: string
-          limits?: number
           levels?: number
           offsets?: number
+          search?: string
           sortcolumn?: string
           sortorder?: string
+          prefix: string
+          limits?: number
         }
         Returns: {
           name: string
@@ -1555,39 +1573,39 @@ export type Database = {
       }
       search_v1_optimised: {
         Args: {
-          sortorder?: string
-          prefix: string
+          offsets?: number
+          levels?: number
           bucketname: string
           limits?: number
-          levels?: number
-          offsets?: number
-          search?: string
+          prefix: string
+          sortorder?: string
           sortcolumn?: string
+          search?: string
         }
         Returns: {
-          created_at: string
           last_accessed_at: string
-          metadata: Json
-          name: string
-          id: string
+          created_at: string
           updated_at: string
+          id: string
+          name: string
+          metadata: Json
         }[]
       }
       search_v2: {
         Args: {
           prefix: string
-          start_after?: string
           bucket_name: string
-          limits?: number
+          start_after?: string
           levels?: number
+          limits?: number
         }
         Returns: {
-          updated_at: string
           metadata: Json
-          key: string
-          name: string
-          id: string
           created_at: string
+          updated_at: string
+          id: string
+          name: string
+          key: string
         }[]
       }
     }

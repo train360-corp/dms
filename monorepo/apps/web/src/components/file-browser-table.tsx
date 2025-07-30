@@ -16,7 +16,6 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { DefaultExtensionType, defaultStyles, FileIcon } from "react-file-icon";
 import * as mime from "react-native-mime-types";
 import { createClient } from "@train360-corp/dms/lib/supabase/client";
-import { Camelize, FileObjectV2 } from "@supabase/storage-js";
 import { NIL } from "uuid";
 
 
@@ -83,16 +82,18 @@ const SymlinkRow = ({ symlink, project, router }: {
   router: AppRouterInstance;
 }) => {
 
-  const [ object, setObject ] = useState<Camelize<FileObjectV2> | null>();
+  const [ object, setObject ] = useState<Tables<{ schema: "storage" }, "objects"> | null>();
 
   const isLoading = object === undefined;
-  const extension = (mime.extension(object?.contentType ?? "...") || "...") as DefaultExtensionType;
+
+  // @ts-ignore
+  const extension = (mime.extension(object?.metadata!.mimetype ?? "...") || "...") as DefaultExtensionType;
 
   useEffect(() => {
     (async () => {
       const supabase = createClient();
       const { data: file } = await supabase.from("files").select("*, current_version_id (*)").eq("id", symlink.file_id).single();
-      const { data: object } = await supabase.storage.from(project.id).info(`/${file?.current_version_id?.object_id ?? NIL}`);
+      const { data: object } = await supabase.rpc("storage.objects.get_object_by_id", { object_id: file?.current_version_id?.object_id ?? NIL });
       setObject(object);
     })();
   }, [ symlink.id ]);

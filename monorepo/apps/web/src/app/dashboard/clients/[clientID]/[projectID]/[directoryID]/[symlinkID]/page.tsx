@@ -48,6 +48,7 @@ export default async function Page(props: {
       <FileViewer
         project={project.data}
         file={file.data}
+        directory={directory.data}
       />
     </PageContent>
   );

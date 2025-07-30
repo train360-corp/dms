@@ -51,7 +51,7 @@ type State = {
   isLoading: false;
   version: Tables<"files_versions">;
   data: {
-    info: Camelize<FileObjectV2>,
+    info: Tables<{ schema: "storage" }, "objects">,
     blob: Blob
   };
 }
@@ -59,6 +59,7 @@ type State = {
 export const FileViewer = (props: {
   file: Tables<"files">;
   project: Tables<"projects">;
+  directory: Tables<"directories">;
 }) => {
 
   const [ state, setState ] = useState<State>({
@@ -93,13 +94,13 @@ export const FileViewer = (props: {
         return;
       }
 
-      const { data: object } = await supabase.storage.from(props.project.id).info(`/${version.object_id}`);
+      const { data: object } = await supabase.rpc("storage.objects.get_object_by_id", { object_id: version.object_id });
       if (!object) {
         setState({ version, data: null, isLoading: false });
         return;
       }
 
-      const { data } = await supabase.storage.from(object.bucketId).download(`/${object.id}`);
+      const { data } = await supabase.storage.from(object.bucket_id!).download(`/${object.name}`);
       setState({ version, data: data === null ? null : { info: object, blob: data }, isLoading: false });
     })();
   }, [ state.version?.version ]);
@@ -128,33 +129,22 @@ export const FileViewer = (props: {
         const supabase = createClient();
         const file = files[0];
 
-        if (file.type !== state.data?.info.contentType) {
+        // @ts-ignore
+        if (file.type !== state.data?.info.metadata!.mimetype) {
           toast.error("Type Mismatch!", {
-            description: `File is ${state.data?.info.contentType} but uploaded file is ${file.type}.`
+            // @ts-ignore
+            description: `File is ${state.data?.info.metadata!.mimetype} but uploaded file is ${file.type}.`
           });
           return;
         }
 
         await uploadFile(supabase, {
-          file,
-          bucket: props.project.id,
-          onSuccess: async (objectID) => {
-            const { error: createFileVersionError, data: version } = await supabase.from("files_versions").insert({
-              object_id: objectID,
-              file_id: props.file.id,
-              version: 0, // auto-set in db trigger
-              name: file.name,
-            }).select().single();
-            if (createFileVersionError || version === null) toast.error("Unable to Create Version!", {
-              description: "An error occurred while creating the file version."
-            });
-            else setState({
-              isLoading: true,
-              version,
-              data: undefined,
-            });
-
+          file: {
+            data: file,
+            object: props.file
           },
+          directory: props.directory,
+          bucket: props.project.id,
           onError: error => {
             if ("originalResponse" in error && error.originalResponse?.getStatus() === 403) toast.error("Permission Denied", {
               description: "You do not have permission to upload to this project."

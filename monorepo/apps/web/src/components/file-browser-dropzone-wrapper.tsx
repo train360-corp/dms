@@ -18,39 +18,12 @@ export const FileBrowserDropzoneWrapper = ({ children, project, directory }: {
 }) => directory === null ? children : (
   <DropzoneWrapper
     onDrop={files => files.forEach(file => uploadFile(createClient(), {
-      file,
-      bucket: project.id,
-      onSuccess: async (objectID) => {
-        const supabase = createClient();
-
-        const handleError = (error: PostgrestError) => {
-          console.error(error);
-          toast.error("Request Failed", {
-            description: "An unknown error occurred."
-          });
-        };
-
-        // create the file
-        const fileID = v4();
-        const { error: createFileError } = await supabase.from("files").insert({ id: fileID });
-        if (createFileError) return handleError(createFileError);
-
-        // create the file version
-        const { error: createFileVersionError } = await supabase.from("files_versions").insert({
-          object_id: objectID,
-          file_id: fileID,
-          version: 1,
-          name: file.name,
-        });
-        if (createFileVersionError) return handleError(createFileVersionError);
-
-        const { error: createSymlinkError } = await supabase.from("symlinks").insert({
-          directory_id: directory!.id,
-          file_id: fileID,
-          name: file.name
-        });
-        if (createSymlinkError) return handleError(createSymlinkError);
+      file: {
+        data: file,
+        object: null
       },
+      directory: directory,
+      bucket: project.id,
       onError: error => {
         if ("originalResponse" in error && error.originalResponse?.getStatus() === 403) toast.error("Permission Denied", {
           description: "You do not have permission to upload to this project."
