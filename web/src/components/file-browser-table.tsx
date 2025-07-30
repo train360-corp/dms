@@ -112,7 +112,7 @@ const SymlinkRow = ({ symlink, project, router }: {
       </TableCell>
       {columns.map((col, index) => (
         <TableCell key={index} className={"last:text-right"}>
-          {col.formatter ? col.formatter(symlink[col.key]) : symlink[col.key]}
+          {col.formatter ? col.formatter(symlink[col.key]!) : symlink[col.key]}
         </TableCell>
       ))}
       <TableCell align={"right"}>
