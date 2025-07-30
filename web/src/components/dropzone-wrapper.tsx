@@ -20,7 +20,7 @@ export const DropzoneWrapper = (props: {
       maxFiles={props.single ? 1 : undefined}
     >
       {({ getRootProps, getInputProps, isDragActive }) => (
-        <div {...getRootProps()} className="h-full relative overflow-hidden">
+        <div {...getRootProps()} className="h-full relative overflow-scroll">
           <input {...getInputProps()} />
           {props.children}
           {isDragActive && (

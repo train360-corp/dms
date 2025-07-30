@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@train360-corp/dms/lib/supabase/client";
 import { FileViewers } from "@train360-corp/dms/components/file-viewer/viewers";
 import { Card } from "@train360-corp/dms/components/ui/card";
-import { NIL, v4 } from "uuid";
+import { NIL } from "uuid";
 import { Tables } from "@train360-corp/dms/types/supabase/types.gen";
 import {
   Select,
@@ -26,8 +26,6 @@ import { Skeleton } from "@train360-corp/dms/components/ui/skeleton";
 import { DropzoneWrapper } from "@train360-corp/dms/components/dropzone-wrapper";
 import { toast } from "sonner";
 import { uploadFile } from "@train360-corp/dms/lib/supabase/upload-file";
-import { PostgrestError } from "@supabase/supabase-js";
-import { useDebounce } from "@uidotdev/usehooks";
 import { Camelize, FileObjectV2 } from "@supabase/storage-js";
 
 
@@ -122,17 +120,17 @@ export const FileViewer = (props: {
         </div>
       )}
       onDrop={async (files) => {
-        if(files.length !== 1) toast.error(`${files.length} Files Dropped!`, {
+        if (files.length !== 1) toast.error(`${files.length} Files Dropped!`, {
           description: "Upload only a single file."
         });
 
         const supabase = createClient();
         const file = files[0];
 
-        if(file.type !== state.data?.info.contentType) {
+        if (file.type !== state.data?.info.contentType) {
           toast.error("Type Mismatch!", {
             description: `File is ${state.data?.info.contentType} but uploaded file is ${file.type}.`
-          })
+          });
           return;
         }
 
@@ -140,15 +138,21 @@ export const FileViewer = (props: {
           file,
           bucket: props.project.id,
           onSuccess: async (objectID) => {
-            const { error: createFileVersionError } = await supabase.from("files_versions").insert({
+            const { error: createFileVersionError, data: version } = await supabase.from("files_versions").insert({
               object_id: objectID,
               file_id: props.file.id,
               version: 0, // auto-set in db trigger
               name: file.name,
-            });
-            if (createFileVersionError) toast.error("Unable to Create Version!", {
+            }).select().single();
+            if (createFileVersionError || version === null) toast.error("Unable to Create Version!", {
               description: "An error occurred while creating the file version."
             });
+            else setState({
+              isLoading: true,
+              version,
+              data: undefined,
+            });
+
           },
           onError: error => {
             if ("originalResponse" in error && error.originalResponse?.getStatus() === 403) toast.error("Permission Denied", {
