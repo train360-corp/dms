@@ -46,12 +46,14 @@ export const FileBrowserDropzoneWrapper = ({ children, project, directory }: {
             object_id: objectID,
             file_id: fileID,
             version: 1,
+            name: file.name,
           });
           if (createFileVersionError) return handleError(createFileVersionError);
 
           const { error: createSymlinkError } = await supabase.from("symlinks").insert({
             directory_id: directory!.id,
             file_id: fileID,
+            name: file.name
           });
           if (createSymlinkError) return handleError(createSymlinkError);
         },

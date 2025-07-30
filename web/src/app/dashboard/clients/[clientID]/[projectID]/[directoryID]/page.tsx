@@ -6,6 +6,7 @@ import {
   NavigateUpButton
 } from "@train360-corp/dms/app/dashboard/clients/[clientID]/[projectID]/[directoryID]/nav-up-button";
 import Link from "next/link";
+import { PageContent } from "@train360-corp/dms/components/page-content";
 
 
 
@@ -28,30 +29,29 @@ export default async function Page({ params, }: {
   if (client.error || project.error || directory?.error) redirect("/dashboard/clients");
 
   return (
-    <div className="@container/main flex flex-1 flex-col gap-2">
-      <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6 h-full">
-
-        <div className={"flex flex-col gap-2"}>
-          <div className={"flex flex-row items-center gap-2"}>
-            <Link href={`/dashboard/clients/${client.data.id}`}>
-              <P className="cursor-pointer hover:underline">{client.data.name}</P>
-            </Link>
-            <P>{"·"}</P>
-            <Link href={`/dashboard/clients/${client.data.id}/${project.data.project_number}`}>
-              <P className="cursor-pointer hover:underline">{project.data.name}</P>
-            </Link>
-          </div>
-
-          <div className={"flex flex-row items-center gap-2"}>
-            {directoryID !== "_" && (
-              <NavigateUpButton client={client.data} project={project.data} directory={directory?.data ?? null}/>
-            )}
-            <H1>{directory?.data ? directory.data.name : "Files"}</H1>
-          </div>
+    <PageContent>
+      <div className={"flex flex-col gap-2"}>
+        <div className={"flex flex-row items-center gap-2"}>
+          <Link href={`/dashboard/clients/${client.data.id}`}>
+            <P className="cursor-pointer hover:underline">{client.data.name}</P>
+          </Link>
+          <P>{"·"}</P>
+          <Link href={`/dashboard/clients/${client.data.id}/${project.data.project_number}`}>
+            <P className="cursor-pointer hover:underline">{project.data.name}</P>
+          </Link>
         </div>
 
+        <div className={"flex flex-row items-center gap-2"}>
+          {directoryID !== "_" && (
+            <NavigateUpButton client={client.data} project={project.data} directory={directory?.data ?? null}/>
+          )}
+          <H1>{directory?.data ? directory.data.name : "Files"}</H1>
+        </div>
+      </div>
+
+      <div className="flex-1 min-h-0 overflow-hidden">
         <FileBrowser directoryID={directoryID} project={project.data} client={client.data}/>
       </div>
-    </div>
+    </PageContent>
   );
 }

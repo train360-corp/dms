@@ -20,7 +20,7 @@ export const FileBrowser = async ({ client, project, directoryID }: {
   if (directory?.error) redirect(`/dashboard/clients/${client.id}/${project.id}`);
 
   return (
-    <div className="flex flex-col gap-4 overflow-y-auto rounded-lg border h-full">
+    <div className="flex flex-col rounded-lg border h-full max-h-full overflow-scroll">
       <FileBrowserDropzoneWrapper
         project={project}
         directory={directory?.data ?? null}

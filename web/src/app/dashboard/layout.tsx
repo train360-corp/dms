@@ -5,18 +5,13 @@ import { SidebarInset, SidebarProvider } from "@train360-corp/dms/components/ui/
 import { AppSidebar } from "@train360-corp/dms/components/app-sidebar";
 import { SiteHeader } from "@train360-corp/dms/components/site-header";
 
-
-
-export default async function Layout({ children }: {
-  children: ReactNode;
-}) {
+export default async function Layout({ children }: { children: ReactNode }) {
   const supabase = await createClient();
-
   const { data: user, error } = await supabase.auth.getUser();
+
   if (error || !user?.user) {
     redirect("/auth/login");
   }
-
 
   return (
     <SidebarProvider
@@ -27,11 +22,13 @@ export default async function Layout({ children }: {
         } as CSSProperties
       }
     >
-      <AppSidebar variant="inset"/>
-      <SidebarInset>
-        <SiteHeader/>
-        <div className="flex flex-1 flex-col">
-          {children}
+      <AppSidebar variant="inset" />
+      <SidebarInset className="m-0 rounded-xl shadow-sm h-full overflow-hidden">
+        <div className="flex h-full flex-col">
+          <SiteHeader />
+          <div className="flex flex-1 flex-col overflow-hidden min-h-0">
+            {children}
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>
