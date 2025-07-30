@@ -10,7 +10,8 @@
     "lint": "next lint",
     "gen": "npm run gen:types",
     "gen:types": "npm run gen:types:supabase",
-    "gen:types:supabase": "supabase gen types --local --schema public --schema auth --schema storage > ./src/types/supabase/types.gen.ts"
+    "gen:types:supabase": "supabase gen types --local --schema public --schema auth --schema storage > ./src/types/supabase/types.gen.ts",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

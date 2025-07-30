@@ -1,0 +1,21 @@
+{
+  "name": "@train360-corp/projdocs",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "turbo dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.5"
+  },
+  "packageManager": "npm@11.4.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
