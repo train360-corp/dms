@@ -27,6 +27,7 @@ import { DropzoneWrapper } from "@train360-corp/dms/components/dropzone-wrapper"
 import { toast } from "sonner";
 import { uploadFile } from "@train360-corp/dms/lib/supabase/upload-file";
 import { Camelize, FileObjectV2 } from "@supabase/storage-js";
+import * as mime from "react-native-mime-types";
 
 
 
@@ -169,7 +170,11 @@ export const FileViewer = (props: {
       <div className={className}>
         {/* VIEWER */}
         <Card className={"py-0 w-[66%] max-w-[66%]"}>
-          <FileViewers blob={state.data.blob}/>
+          <FileViewers
+            blob={state.data.blob}
+            version={state.version}
+            file={props.file}
+          />
         </Card>
 
         {/* SIDEBAR */}
@@ -239,7 +244,10 @@ export const FileViewer = (props: {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <a href={URL.createObjectURL(state.data.blob)} download>
+                <a
+                  href={URL.createObjectURL(state.data.blob)}
+                  download={`${state.version.name.trim().replace(/\.[^/.]+$/, "")} (${props.file.number}.${state.version.version}).${state.version.name.trim().split(".").pop()!}`}
+                >
                   <Button variant={"outline"} size={"icon"}>
                     <IconDownload size={8}/>
                   </Button>
