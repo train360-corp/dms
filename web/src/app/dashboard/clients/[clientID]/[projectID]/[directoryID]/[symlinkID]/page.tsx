@@ -1,18 +1,10 @@
 import { createClient } from "@train360-corp/dms/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { H1, P } from "@train360-corp/dms/components/ui/text";
-import {
-  NavigateUpButton
-} from "@train360-corp/dms/app/dashboard/clients/[clientID]/[projectID]/[directoryID]/nav-up-button";
+import { P } from "@train360-corp/dms/components/ui/text";
 import Link from "next/link";
 import { NIL } from "uuid";
 import { FileViewer } from "@train360-corp/dms/components/file-viewer/file-viewer";
 import { PageContent } from "@train360-corp/dms/components/page-content";
-import { Button } from "@train360-corp/dms/components/ui/button";
-import { ChevronLeftIcon } from "lucide-react";
-import {
-  BackButton
-} from "@train360-corp/dms/app/dashboard/clients/[clientID]/[projectID]/[directoryID]/[symlinkID]/back-button";
 
 
 
