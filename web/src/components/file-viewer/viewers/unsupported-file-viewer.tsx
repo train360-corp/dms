@@ -12,7 +12,7 @@ export const UnsupportedFileViewer = ({ blob }: FileViewerProps) => {
         This file type is not supported for preview. You can still download the file to view it locally.
       </P>
       <a href={url} download className="mt-4">
-        <Button>Download File</Button>
+        <Button className={"dark:text-white"}>{"Download File"}</Button>
       </a>
     </div>
   );

@@ -1,6 +1,6 @@
 import { FileViewer } from "@train360-corp/dms/components/file-viewer/types";
-import { PDFFileViewer } from "@train360-corp/dms/components/file-viewer/pdf-file-viewer";
-import { UnsupportedFileViewer } from "@train360-corp/dms/components/file-viewer/unsupported-file-viewer";
+import { PDFFileViewer } from "@train360-corp/dms/components/file-viewer/viewers/pdf-file-viewer";
+import { UnsupportedFileViewer } from "@train360-corp/dms/components/file-viewer/viewers/unsupported-file-viewer";
 
 
 

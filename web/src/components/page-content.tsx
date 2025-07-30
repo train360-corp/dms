@@ -1,12 +1,17 @@
 import { ReactNode } from "react";
+import { cn } from "@train360-corp/dms/lib/utils";
 
 
 
-export const PageContent = ({children}: {
+export const PageContent = ({children, className}: {
   children?: ReactNode;
+  className?: string;
 }) => (
   <div className="@container/main flex flex-1 flex-col gap-2 max-h-full">
-    <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6 h-full">
+    <div className={cn(
+      "flex flex-col gap-4 p-4 md:gap-6 md:p-6 h-full",
+      className
+    )}>
       {children}
     </div>
   </div>
