@@ -1,10 +1,9 @@
-version: "3.8"
-
 services:
   supabase:
     image: ghcr.io/train360-corp/supabase:latest
     container_name: supabase
     restart: unless-stopped
+    pull_policy: always
     env_file:
       - .env
     ports:
@@ -13,3 +12,5 @@ services:
     volumes:
       - ./pg_data:/var/lib/postgresql/data
       - ./storage_data:/supabase/storage/data
+      - ./supabase/migrations:/supabase/migrations
+      - ./supabase/seeds:/supabase/seeds
