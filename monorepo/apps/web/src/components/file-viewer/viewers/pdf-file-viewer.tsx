@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useRef } from "react";
 import { FileViewerProps } from "@train360-corp/dms/components/file-viewer/types";
 import { usePDFJS } from "@train360-corp/dms/hooks/use-pdfjs";
 
+
+
 export const PDFFileViewer = ({ blob }: FileViewerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [pdfPages, setPdfPages] = useState<number>(0);
 
   usePDFJS(async (pdfjs) => {
     const pdf = await pdfjs.getDocument(await blob.arrayBuffer()).promise;
-    setPdfPages(pdf.numPages); // triggers re-render
 
     const container = containerRef.current;
     if (!container) return;
@@ -32,11 +32,11 @@ export const PDFFileViewer = ({ blob }: FileViewerProps) => {
 
       container.appendChild(canvas);
     }
-  }, [blob.size]);
+  }, [ blob.size ]);
 
   return (
     <div className="w-full h-full overflow-auto bg-gray-50 p-4 rounded-lg shadow-inner">
-      <div ref={containerRef} className="flex flex-col items-center gap-4" />
+      <div ref={containerRef} className="flex flex-col items-center gap-4"/>
     </div>
   );
 };
