@@ -15,21 +15,23 @@ Office.onReady()
     console.error("Office.onReady failed:", e);
   });
 
-// const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 const __open = async (target: string) =>
-  await new Promise((resolve, reject) => {
+  await new Promise((resolve) => {
     Office.context.ui.displayDialogAsync(
       new URL(`/index.html?target=${target}`, window.location.origin).toString(),
       { height: 40, width: 30 },
       (result) => {
-        if (result.status === Office.AsyncResultStatus.Succeeded) {
-          // const dialog = result.value;
-          // setTimeout(() => dialog.close(), 3000);
-          resolve("closed");
-        } else {
-          reject(result.error);
-        }
+        const dialog: Office.Dialog = result.value;
+        dialog.addEventHandler(Office.EventType.DialogMessageReceived, (arg) => {
+          if(arg && "message" in arg) {
+            switch (arg.message) {
+              case "CLOSE":
+                dialog.close();
+                resolve("closed");
+                break;
+            }
+          }
+        });
       }
     );
   });
