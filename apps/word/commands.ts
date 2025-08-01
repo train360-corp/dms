@@ -15,6 +15,8 @@ Office.onReady()
     console.error("Office.onReady failed:", e);
   });
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 const __open = async (target: string) => {
   await new Promise((resolve, reject) => {
     Office.context.ui.displayDialogAsync(
@@ -31,6 +33,7 @@ const __open = async (target: string) => {
       }
     );
   });
+  await sleep(10000);
 }
 
 const save: Action = async (event) => {
