@@ -6,8 +6,8 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="ProjDocs"/>
   <Description DefaultValue="ProjDocs Connector"/>
-  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-64.png"/>
+  <IconUrl DefaultValue="https://word.projdocs.com/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://word.projdocs.com/assets/icon-64.png"/>
   <SupportUrl DefaultValue="https://projdocs.com"/>
   <AppDomains>
     <AppDomain>https://projdocs.com</AppDomain>
@@ -98,9 +98,9 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+        <bt:Image id="Icon.16x16" DefaultValue="https://word.projdocs.com/assets/icon-16.png"/>
+        <bt:Image id="Icon.32x32" DefaultValue="https://word.projdocs.com/assets/icon-32.png"/>
+        <bt:Image id="Icon.80x80" DefaultValue="https://word.projdocs.com/assets/icon-80.png"/>
 
         <!-- Button 1: Save -->
         <bt:Image id="Icon.Save.16x16" DefaultValue="https://word.projdocs.com/icons/16-save.png"/>
@@ -120,8 +120,7 @@
       </bt:Images>
       <bt:Urls>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
-        <bt:Url id="Commands.Url" DefaultValue="https://localhost:3000/commands.html"/>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
+        <bt:Url id="Commands.Url" DefaultValue="https://word.projdocs.com/commands.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="ProjDocs loaded successfully!"/>
