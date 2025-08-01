@@ -18,6 +18,9 @@ Office.onReady()
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const __open = async (target: string) => {
+
+  open(`projdocs://inbound-redirect-handler/word/${target}`);
+
   await new Promise((resolve, reject) => {
     Office.context.ui.displayDialogAsync(
       new URL(`/index.html?target=${target}`, window.location.origin).toString(),
