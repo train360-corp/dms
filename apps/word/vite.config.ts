@@ -8,7 +8,7 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         { src: 'manifest.xml', dest: '' },
-        { src: 'public/*.png', dest: '' },
+        { src: 'public/icons/**/*', dest: 'icons' },
       ],
     }),
   ],

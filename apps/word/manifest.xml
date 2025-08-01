@@ -11,6 +11,7 @@
   <SupportUrl DefaultValue="https://projdocs.com"/>
   <AppDomains>
     <AppDomain>https://projdocs.com</AppDomain>
+    <AppDomain>https://word.projdocs.com</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Document"/>
@@ -38,16 +39,18 @@
                   <bt:Image size="32" resid="Icon.32x32"/>
                   <bt:Image size="80" resid="Icon.80x80"/>
                 </Icon>
-                <Control xsi:type="Button" id="TaskpaneButton1">
-                  <Label resid="TaskpaneButton.Label"/>
+
+                <!-- Button1: Save -->
+                <Control xsi:type="Button" id="SaveButton">
+                  <Label resid="SaveButton.Label"/>
                   <Supertip>
-                    <Title resid="TaskpaneButton.Label"/>
-                    <Description resid="TaskpaneButton.Tooltip"/>
+                    <Title resid="SaveButton.Label"/>
+                    <Description resid="SaveButton.Tooltip"/>
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="Icon.16x16"/>
-                    <bt:Image size="32" resid="Icon.32x32"/>
-                    <bt:Image size="80" resid="Icon.80x80"/>
+                    <bt:Image size="16" resid="Icon.Save.16x16"/>
+                    <bt:Image size="32" resid="Icon.Save.32x32"/>
+                    <bt:Image size="80" resid="Icon.Save.80x80"/>
                   </Icon>
                   <Action xsi:type="ExecuteFunction">
                     <FunctionName>showDialog</FunctionName>
@@ -96,6 +99,21 @@
         <bt:Image id="Icon.16x16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
         <bt:Image id="Icon.32x32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
         <bt:Image id="Icon.80x80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+
+        <!-- Button 1: Save -->
+        <bt:Image id="Icon.Save.16x16" DefaultValue="https://word.projdocs.com/icons/16-save.png"/>
+        <bt:Image id="Icon.Save.32x32" DefaultValue="https://word.projdocs.com/icons/32-save.png"/>
+        <bt:Image id="Icon.Save.80x80" DefaultValue="https://word.projdocs.com/icons/80-save.png"/>
+
+        <!-- Button 2: Save As New Version -->
+        <bt:Image id="Icon.SaveAsNewVersion.16x16" DefaultValue="https://word.projdocs.com/icons/16-save-as-new-version.png"/>
+        <bt:Image id="Icon.SaveAsNewVersion.32x32" DefaultValue="https://word.projdocs.com/icons/32-save-as-new-version.png"/>
+        <bt:Image id="Icon.SaveAsNewVersion.80x80" DefaultValue="https://word.projdocs.com/icons/80-save-as-new-version.png"/>
+
+        <!-- Button 3: Save As New Document -->
+        <bt:Image id="Icon.SaveAsNewDocument.16x16" DefaultValue="https://word.projdocs.com/icons/16-save-as-new-document.png"/>
+        <bt:Image id="Icon.SaveAsNewDocument.32x32" DefaultValue="https://word.projdocs.com/icons/32-save-as-new-document.png"/>
+        <bt:Image id="Icon.SaveAsNewDocument.80x80" DefaultValue="https://word.projdocs.com/icons/80-save-as-new-document.png"/>
       </bt:Images>
       <bt:Urls>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
@@ -106,10 +124,17 @@
         <bt:String id="GetStarted.Title" DefaultValue="ProjDocs loaded successfully!"/>
         <bt:String id="CommandsGroup.Label" DefaultValue="Commands Group"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="Show Task Pane"/>
+
+        <!-- Button 1: Save-->
+        <bt:String id="SaveButton.Label" DefaultValue="Save"/>
+
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="The ProjDocs add-in loaded successfully. Go to the HOME tab to continue."/>
         <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show a Task Pane"/>
+
+        <!-- Button 1: Save-->
+        <bt:String id="SaveButton.Tooltip" DefaultValue="Save the document, overwriting the current version."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

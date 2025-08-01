@@ -2,14 +2,14 @@ Office.onReady(() => {
   console.log("Office is ready");
 });
 
-export function openProjDocs1() {
+export function save() {
   window.location.href = "projdocs://app/1";
 }
 
-export function openProjDocs2() {
+export function saveAsNewVersion() {
   window.location.href = "projdocs://app/2";
 }
 
-export function openProjDocs3() {
+export function saveAsNewFile() {
   window.location.href = "projdocs://app/3";
 }
