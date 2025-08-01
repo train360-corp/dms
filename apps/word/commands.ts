@@ -1,3 +1,5 @@
+/// <reference types="office-js" />
+
 Office.onReady(() => {
   console.log("Office is ready");
 });
