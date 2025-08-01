@@ -1,5 +1,9 @@
 /// <reference types="office-js" />
 
+type Action = (event?: {
+  completed?: () => void;
+}) => Promise<void>;
+
 Office.onReady()
   .then(() => {
     console.log("Office is ready");
@@ -11,20 +15,41 @@ Office.onReady()
     console.error("Office.onReady failed:", e);
   });
 
-function save(): Promise<void> {
+const __open = async (target: string) => {
+  await new Promise((resolve, reject) => {
+    Office.context.ui.displayDialogAsync(
+      new URL(`/dialog.html?target=${target}`, window.location.origin).toString(),
+      { height: 40, width: 30 },
+      (result) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          const dialog = result.value;
+          setTimeout(() => dialog.close(), 3000);
+          resolve("closed");
+        } else {
+          reject(result.error);
+        }
+      }
+    );
+  });
+}
+
+const save: Action = async (event) => {
   console.log("✅ save() was called");
-  window.location.href = "projdocs://app/1";
+  await __open("save");
+  if (event !== undefined && "completed" in event && event.completed !== undefined) event.completed();
   return Promise.resolve();
 }
 
-function saveAsNewVersion(): Promise<void> {
+const saveAsNewVersion: Action = async (event) => {
   console.log("✅ saveAsNewVersion() was called");
-  window.location.href = "projdocs://app/2";
+  await __open("save-as-new-version");
+  if (event !== undefined && "completed" in event && event.completed !== undefined) event.completed();
   return Promise.resolve();
 }
 
-function saveAsNewFile(): Promise<void> {
+const saveAsNewFile: Action = async (event) => {
   console.log("✅ saveAsNewFile() was called");
-  window.location.href = "projdocs://app/3";
+  await __open("save-as-new-file");
+  if (event !== undefined && "completed" in event && event.completed !== undefined) event.completed();
   return Promise.resolve();
 }
