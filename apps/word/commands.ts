@@ -1,17 +1,29 @@
 /// <reference types="office-js" />
 
-Office.onReady(() => {
+
+
+Office.onReady().then(() => {
   console.log("Office is ready");
+
+  // Register command callbacks by name
+  Office.actions.associate("save", save);
+  Office.actions.associate("saveAsNewVersion", saveAsNewVersion);
+  Office.actions.associate("saveAsNewFile", saveAsNewFile);
+}).catch(e => {
+  console.error(e);
 });
 
-export function save() {
-  window.location.href = "projdocs://app/1";
+function save() {
+  console.log("✅ save() was called");
+  return Promise.resolve();
 }
 
-export function saveAsNewVersion() {
-  window.location.href = "projdocs://app/2";
+function saveAsNewVersion() {
+  console.log("✅ saveAsNewVersion() was called");
+  return Promise.resolve();
 }
 
-export function saveAsNewFile() {
-  window.location.href = "projdocs://app/3";
+function saveAsNewFile() {
+  console.log("✅ saveAsNewFile() was called");
+  return Promise.resolve();
 }

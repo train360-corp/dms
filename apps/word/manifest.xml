@@ -17,7 +17,7 @@
     <Host Name="Document"/>
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:3000/commands.html"/>
+    <SourceLocation DefaultValue="https://word.projdocs.com/commands.html"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
@@ -40,7 +40,7 @@
                   <bt:Image size="80" resid="Icon.80x80"/>
                 </Icon>
 
-                <!-- Button1: Save -->
+                <!-- Button 1: Save -->
                 <Control xsi:type="Button" id="SaveButton">
                   <Label resid="SaveButton.Label"/>
                   <Supertip>
@@ -53,39 +53,41 @@
                     <bt:Image size="80" resid="Icon.Save.80x80"/>
                   </Icon>
                   <Action xsi:type="ExecuteFunction">
-                    <FunctionName>showDialog</FunctionName>
+                    <FunctionName>save</FunctionName>
                   </Action>
                 </Control>
 
-                <Control xsi:type="Button" id="TaskpaneButton2">
-                  <Label resid="TaskpaneButton.Label"/>
+                <!-- Button 2: Save As New Version -->
+                <Control xsi:type="Button" id="SaveAsNewVersionButton">
+                  <Label resid="SaveAsNewVersionButton.Label"/>
                   <Supertip>
-                    <Title resid="TaskpaneButton.Label"/>
-                    <Description resid="TaskpaneButton.Tooltip"/>
+                    <Title resid="SaveAsNewVersionButton.Label"/>
+                    <Description resid="SaveAsNewVersionButton.Tooltip"/>
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="Icon.16x16"/>
-                    <bt:Image size="32" resid="Icon.32x32"/>
-                    <bt:Image size="80" resid="Icon.80x80"/>
+                    <bt:Image size="16" resid="Icon.SaveAsNewVersion.16x16"/>
+                    <bt:Image size="32" resid="Icon.SaveAsNewVersion.32x32"/>
+                    <bt:Image size="80" resid="Icon.SaveAsNewVersion.80x80"/>
                   </Icon>
                   <Action xsi:type="ExecuteFunction">
-                    <FunctionName>showDialog</FunctionName>
+                    <FunctionName>saveAsNewVersion</FunctionName>
                   </Action>
                 </Control>
 
-                <Control xsi:type="Button" id="TaskpaneButton3">
-                  <Label resid="TaskpaneButton.Label"/>
+                <!-- Button 3: Save As New Document -->
+                <Control xsi:type="Button" id="SaveAsNewDocumentButton">
+                  <Label resid="SaveAsNewDocumentButton.Label"/>
                   <Supertip>
-                    <Title resid="TaskpaneButton.Label"/>
-                    <Description resid="TaskpaneButton.Tooltip"/>
+                    <Title resid="SaveAsNewDocumentButton.Label"/>
+                    <Description resid="SaveAsNewDocumentButton.Tooltip"/>
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="Icon.16x16"/>
-                    <bt:Image size="32" resid="Icon.32x32"/>
-                    <bt:Image size="80" resid="Icon.80x80"/>
+                    <bt:Image size="16" resid="Icon.SaveAsNewDocument.16x16"/>
+                    <bt:Image size="32" resid="Icon.SaveAsNewDocument.32x32"/>
+                    <bt:Image size="80" resid="Icon.SaveAsNewDocument.80x80"/>
                   </Icon>
                   <Action xsi:type="ExecuteFunction">
-                    <FunctionName>showDialog</FunctionName>
+                    <FunctionName>saveAsNewFile</FunctionName>
                   </Action>
                 </Control>
               </Group>
@@ -114,6 +116,7 @@
         <bt:Image id="Icon.SaveAsNewDocument.16x16" DefaultValue="https://word.projdocs.com/icons/16-save-as-new-document.png"/>
         <bt:Image id="Icon.SaveAsNewDocument.32x32" DefaultValue="https://word.projdocs.com/icons/32-save-as-new-document.png"/>
         <bt:Image id="Icon.SaveAsNewDocument.80x80" DefaultValue="https://word.projdocs.com/icons/80-save-as-new-document.png"/>
+
       </bt:Images>
       <bt:Urls>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
@@ -125,8 +128,14 @@
         <bt:String id="CommandsGroup.Label" DefaultValue="Commands Group"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="Show Task Pane"/>
 
-        <!-- Button 1: Save-->
+        <!-- Button 1: Save -->
         <bt:String id="SaveButton.Label" DefaultValue="Save"/>
+
+        <!-- Button 2: Save As New Version -->
+        <bt:String id="SaveAsNewVersionButton.Label" DefaultValue="Save as New Version" />
+
+        <!-- Button 3: Save As New Document -->
+        <bt:String id="SaveAsNewDocumentButton.Label" DefaultValue="Save as New Document" />
 
       </bt:ShortStrings>
       <bt:LongStrings>
@@ -135,6 +144,13 @@
 
         <!-- Button 1: Save-->
         <bt:String id="SaveButton.Tooltip" DefaultValue="Save the document, overwriting the current version."/>
+
+        <!-- Button 2: Save As New Version -->
+        <bt:String id="SaveAsNewVersionButton.Tooltip" DefaultValue="Save the document as a new version."/>
+
+        <!-- Button 3: Save As New Document -->
+        <bt:String id="SaveAsNewDocumentButton.Tooltip" DefaultValue="Save the document as a new file."/>
+
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
