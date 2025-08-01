@@ -15,12 +15,9 @@ Office.onReady()
     console.error("Office.onReady failed:", e);
   });
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+// const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-const __open = async (target: string) => {
-
-  open(`projdocs://inbound-redirect-handler/word/${target}`);
-
+const __open = async (target: string) =>
   await new Promise((resolve, reject) => {
     Office.context.ui.displayDialogAsync(
       new URL(`/index.html?target=${target}`, window.location.origin).toString(),
@@ -36,26 +33,25 @@ const __open = async (target: string) => {
       }
     );
   });
-  await sleep(10000);
-}
+
 
 const save: Action = async (event) => {
   console.log("✅ save() was called");
   await __open("save");
   if (event !== undefined && "completed" in event && event.completed !== undefined) event.completed();
   return Promise.resolve();
-}
+};
 
 const saveAsNewVersion: Action = async (event) => {
   console.log("✅ saveAsNewVersion() was called");
   await __open("save-as-new-version");
   if (event !== undefined && "completed" in event && event.completed !== undefined) event.completed();
   return Promise.resolve();
-}
+};
 
 const saveAsNewFile: Action = async (event) => {
   console.log("✅ saveAsNewFile() was called");
   await __open("save-as-new-file");
   if (event !== undefined && "completed" in event && event.completed !== undefined) event.completed();
   return Promise.resolve();
-}
+};

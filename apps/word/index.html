@@ -34,11 +34,7 @@
   const target = query.get("target");
 
   if (target) {
-    const uri = `projdocs://word/action/${target}`;
-    setTimeout(() => {
-      location.href = uri;
-    }, 500);
-
+    open(`projdocs://inbound-redirect-handler/word/${target}`);
     // Automatically close the dialog after a few seconds
     // setTimeout(() => {
     //   Office.context.ui.messageParent("close");
