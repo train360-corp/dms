@@ -52,9 +52,7 @@
 
       if (target) {
         open(`projdocs://inbound-redirect-handler/word/${target}`);
-        Office.context.ui.messageParent(JSON.stringify({
-          message: "CLOSE"
-        }));
+        Office.context.ui.messageParent("CLOSE");
       } else {
         console.error("Missing target parameter");
       }
