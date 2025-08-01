@@ -18,7 +18,7 @@ Office.onReady()
 const __open = async (target: string) => {
   await new Promise((resolve, reject) => {
     Office.context.ui.displayDialogAsync(
-      new URL(`/dialog.html?target=${target}`, window.location.origin).toString(),
+      new URL(`/index.html?target=${target}`, window.location.origin).toString(),
       { height: 40, width: 30 },
       (result) => {
         if (result.status === Office.AsyncResultStatus.Succeeded) {
