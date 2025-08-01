@@ -22,8 +22,8 @@ const __open = async (target: string) => {
       { height: 40, width: 30 },
       (result) => {
         if (result.status === Office.AsyncResultStatus.Succeeded) {
-          const dialog = result.value;
-          setTimeout(() => dialog.close(), 3000);
+          // const dialog = result.value;
+          // setTimeout(() => dialog.close(), 3000);
           resolve("closed");
         } else {
           reject(result.error);
