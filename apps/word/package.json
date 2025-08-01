@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "inject-manifest": "rm -rf ~/Library/Containers/com.microsoft.Word/Data/Documents/wef/manifest.xml && cp ./manifest.xml ~/Library/Containers/com.microsoft.Word/Data/Documents/wef/manifest.xml",
+    "inject-manifest": "rm -rf ~/Library/Containers/com.microsoft.Word/Data/Documents/wef/manifest.xml && cp ./manifest.xml ~/Library/Containers/com.microsoft.Word/Data/Documents/wef/\"$(uuidgen).manifest.xml\"",
     "validate": "office-addin-manifest validate ./manifest.xml ",
     "predev": "npm run inject-manifest",
     "dev": "vite",
