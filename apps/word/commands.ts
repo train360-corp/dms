@@ -24,6 +24,9 @@ const __open = async (target: string) =>
         const dialog: Office.Dialog = result.value;
         dialog.addEventHandler(Office.EventType.DialogMessageReceived, (arg) => {
           if(arg && "message" in arg) {
+
+            console.log("received message:", arg.message)
+
             switch (arg.message) {
               case "CLOSE":
                 dialog.close();

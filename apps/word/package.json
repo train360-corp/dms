@@ -10,7 +10,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "enable-debugger:word": "defaults write com.microsoft.Word OfficeWebAddinDeveloperExtras -bool true && defaults write com.microsoft.Word OfficeAddinDebuggerEnabled -bool true",
+    "disable-debugger:word": "defaults delete com.microsoft.Word OfficeWebAddinDeveloperExtras && defaults delete com.microsoft.Word OfficeAddinDebuggerEnabled"
   },
   "dependencies": {
     "@microsoft/office-js": "^1.1.110",
