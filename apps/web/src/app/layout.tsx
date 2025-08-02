@@ -6,8 +6,8 @@ import { Toaster } from "@workspace/ui/components/sonner";
 
 
 export const metadata: Metadata = {
-  title: "Train360 DMS",
-  description: "A Supabase-powered document management system!",
+  title: "ProjDocs",
+  description: "A project-oriented document management system!",
 };
 
 export default function RootLayout({
