@@ -1,15 +1,17 @@
 export {};
 
 declare global {
-  type BrowserRuntimeEnvironment = {
+
+  type RuntimeEnvironment = {
     SUPABASE_PUBLIC_URL: string;
     SUPABASE_PUBLIC_KEY: string;
+  };
+
+  type BrowserRuntimeEnvironment = RuntimeEnvironment & {
   }
 
   namespace NodeJS {
-    interface ProcessEnv {
-      SUPABASE_PUBLIC_URL: BrowserRuntimeEnvironment["SUPABASE_PUBLIC_URL"];
-      SUPABASE_PUBLIC_KEY: BrowserRuntimeEnvironment["SUPABASE_PUBLIC_KEY"];
+    interface ProcessEnv extends BrowserRuntimeEnvironment{
     }
   }
 
