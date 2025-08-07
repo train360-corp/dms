@@ -6,11 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'web/Dockerfile'
-      - 'web/**.ts'
-      - 'web/**.js'
-      - 'web/**.json'
-      - 'web/.dockerignore'
+      - 'apps/web/**'
       - '.github/workflows/build.yml'
 
 env:

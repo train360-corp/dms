@@ -1,9 +1,13 @@
 name: Deploy `word` to GitHub Pages
 
 on:
-  push:
-    branches: ['main']
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/word/**'
+      - '.github/workflows/build-and-deploy-word.yml'
 
 permissions:
   contents: read
