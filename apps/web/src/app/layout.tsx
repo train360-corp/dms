@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "@workspace/ui/styles/globals.css";
+import "@workspace/ui/globals.css";
 import { ThemeProvider } from "@workspace/ui/components/theme-provider";
 import { Toaster } from "@workspace/ui/components/sonner";
 
