@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - 'apps/web/**'
-      - 'build-web.yml'
+      - '.github/workflows/build-web.yml'
 
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository }}
